@@ -19,5 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/category', 'CategoryController@index');
-Route::get('/category/{category}', 'CategoryController@show');
+Route::get('/issues', 'IssuesController@index');
+Route::get('/issues/{issue}', 'IssuesController@show');
+Route::post('/issues/{issue}/replies', 'RepliesController@store');
+

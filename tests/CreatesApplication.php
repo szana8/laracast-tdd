@@ -18,6 +18,10 @@ trait CreatesApplication
 
         $app->make(Kernel::class)->bootstrap();
 
+        $app['config']->set('app.enviroment','testing');
+        $app['config']->set('database.default','sqlite');
+        $app['config']->set('database.connections.sqlite.database', ':memory:');
+
         Hash::driver('bcrypt')->setRounds(4);
 
         return $app;
