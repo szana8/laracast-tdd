@@ -2,19 +2,34 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Issue;
 use Illuminate\Http\Request;
 
 class IssuesController extends Controller
 {
     /**
+     * IssuesController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware(['web','auth'])->except(['index', 'show']);
+    }
+
+    /**
      * Display a listing of the resource.
      *
+     * @param Category $category
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Category $category)
     {
-        $issues = Issue::latest()->get();
+        if ($category->exists) {
+            $issues = $category->issues()->latest()->get();
+        }
+        else {
+            $issues = Issue::latest()->get();
+        }
 
         return view('issue.index', compact('issues'));
     }
@@ -26,7 +41,7 @@ class IssuesController extends Controller
      */
     public function create()
     {
-        //
+        return view('issue.create');
     }
 
     /**
@@ -37,7 +52,20 @@ class IssuesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'summary' => 'required',
+            'description' => 'required',
+            'category_id' => 'required|exists:categories,id'
+        ]);
+
+        $issue = Issue::create([
+            'user_id' => auth()->id(),
+            'category_id' => request('category_id'),
+            'summary' => request('summary'),
+            'description' => request('description')
+        ]);
+
+        return redirect($issue->path());
     }
 
     /**
@@ -46,7 +74,7 @@ class IssuesController extends Controller
      * @param  \App\Issue  $issue
      * @return \Illuminate\Http\Response
      */
-    public function show(Issue $issue)
+    public function show($category, Issue $issue)
     {
         return view('issue.show', compact('issue'));
     }

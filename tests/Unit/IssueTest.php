@@ -20,15 +20,15 @@ class IssueTest extends TestCase
     }
 
     /** @test */
-    function an_issue_has_replies()
-    {
-        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $this->issue->replies);
-    }
-
-    /** @test */
     function an_issue_has_a_creator()
     {
         $this->assertInstanceOf('App\User', $this->issue->creator);
+    }
+
+    /** @test */
+    function an_issue_has_replies()
+    {
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $this->issue->replies);
     }
 
     /** @test */
@@ -41,4 +41,13 @@ class IssueTest extends TestCase
 
         $this->assertCount(1, $this->issue->replies);
     }
+
+    /** @test */
+    function an_issue_belongs_to_a_category()
+    {
+        $issue = create('App\Issue');
+
+        $this->assertInstanceOf('App\Category', $issue->category);
+    }
+
 }

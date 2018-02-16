@@ -17,9 +17,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index');
 
-Route::get('/issues', 'IssuesController@index');
-Route::get('/issues/{issue}', 'IssuesController@show');
-Route::post('/issues/{issue}/replies', 'RepliesController@store');
+Route::get('issues', 'IssuesController@index');
+Route::get('issues/create', 'IssuesController@create');
+Route::post('issues', 'IssuesController@store');
+Route::get('issues/{category}/{issue}', 'IssuesController@show');
+Route::get('issues/{category}', 'IssuesController@index');
+Route::post('issues/{category}/{issue}/replies', 'RepliesController@store');
 

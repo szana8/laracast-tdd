@@ -5,18 +5,28 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-class IssueTest extends TestCase
+class ReadIssueTest extends TestCase
 {
     use DatabaseMigrations;
 
     protected $issue;
 
-
+    /**
+     * Setup
+     */
     public function setUp()
     {
         parent::setUp();
 
         $this->issue = factory('App\Issue')->create();
+    }
+
+    /** @test */
+    function an_issue_can_make_a_string_path()
+    {
+        $issue = create('App\Issue');
+
+        $this->assertEquals('/issues/' . $issue->category->slug . '/' . $issue->id, $issue->path());
     }
 
     /** @test */
@@ -36,13 +46,21 @@ class IssueTest extends TestCase
     /** @test */
     public function a_user_can_read_replies_that_are_associated_with_an_issue()
     {
-        // Given we have an issue
-        // And that issue includes replies
         $reply = factory('App\Reply')->create(['issue_id' => $this->issue->id]);
 
-        // When we visit an issue page
-        // Then we should see the replies
         $this->get($this->issue->path())
             ->assertSee($reply->body);
+    }
+
+    /** @test */
+    function a_user_can_filter_issues_according_to_a_category()
+    {
+        $category = create('App\Category');
+        $issueInCategory = create('App\Issue', ['category_id' => $category->id]);
+        $issueNotInCategory = create('App\Issue');
+
+        $this->get('/issues/' . $category->slug)
+            ->assertSee($issueInCategory->summary)
+            ->assertDontSee($issueNotInCategory->summary);
     }
 }

@@ -19,8 +19,12 @@ class RepliesController extends Controller
      * @param Issue $issue
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Issue $issue)
+    public function store($categoryId, Issue $issue)
     {
+        $this->validate(request(), [
+            'body' => 'required'
+        ]);
+
         $issue->addReply([
             'body' => request('body'),
             'user_id' => auth()->id()

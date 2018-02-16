@@ -26,21 +26,21 @@
             </div>
         </div>
 
-        @auth
+        @if (auth()->check())
             <div class="row justify-content-center">
                 <div class="col-md-8 mt-4">
                     <form method="POST" action="{{ $issue->path() . '/replies' }}">
                         {{ csrf_field() }}
                         <div class="form-group">
-                            <textarea class="form-control" name="body" id="body" rows="5" placeholder="Have you say something?"></textarea>
+                            <textarea class="form-control" name="body" id="body" rows="5"
+                                      placeholder="Have you say something?"></textarea>
                         </div>
 
                         <button class="btn btn-xs">Submit</button>
                     </form>
                 </div>
             </div>
-        @endauth
-        @if (! auth()->check())
+        @else
             <p class="text-center">Please <a href="{{ route('login') }}">sign in</a> to participate this issue!</p>
         @endif
     </div>
