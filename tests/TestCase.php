@@ -14,7 +14,7 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        $this->disableExceptionHandling();
+        //$this->disableExceptionHandling();
     }
 
     protected function signIn($user = null)

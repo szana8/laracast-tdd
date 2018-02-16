@@ -63,4 +63,17 @@ class ReadIssueTest extends TestCase
             ->assertSee($issueInCategory->summary)
             ->assertDontSee($issueNotInCategory->summary);
     }
+
+    /** @test */
+    function a_user_can_filter_issues_by_any_username()
+    {
+        $this->signIn(create('App\User', ['name' => 'JohnDoe']));
+
+        $issueByJohn = create('App\Issue', ['user_id' => auth()->id()]);
+        $issueNotByJohn = create('App\Issue');
+
+        $this->get('/issues?by=JohnDoe')
+            ->assertSee($issueByJohn->summary)
+            ->assertDontSee($issueNotByJohn->summary);
+    }
 }

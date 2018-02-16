@@ -12,6 +12,15 @@ class Issue extends Model
 
     protected $guarded = [];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('replyCount', function ($builder) {
+           $builder->withCount('replies');
+        });
+    }
+
     /**
      * The url of the issue.
      *
@@ -31,6 +40,8 @@ class Issue extends Model
     {
         return $this->hasMany(Reply::class);
     }
+
+
 
     /**
      * An issue belongs to a creator.
@@ -60,5 +71,17 @@ class Issue extends Model
     public function addReply($reply)
     {
         $this->replies()->create($reply);
+    }
+
+    /**
+     * Apply all relevant issue filters.
+     *
+     * @param $query
+     * @param $filters
+     * @return mixed
+     */
+    public function scopeFilter($query, $filters)
+    {
+        return $filters->apply($query);
     }
 }

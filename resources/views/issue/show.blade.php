@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <div class="row justify-content-center">
+        <div class="row">
             <div class="col-md-8">
                 <div class="card card-default">
                     <div class="card-header">
@@ -15,33 +15,42 @@
                         {{ $issue->description }}
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="row justify-content-center">
-            <div class="col-md-8 mt-4">
-                @foreach($issue->replies as $reply)
+                @foreach($replies as $reply)
                     @include('issue.reply', $reply)
                 @endforeach
-            </div>
-        </div>
 
-        @if (auth()->check())
-            <div class="row justify-content-center">
-                <div class="col-md-8 mt-4">
-                    <form method="POST" action="{{ $issue->path() . '/replies' }}">
-                        {{ csrf_field() }}
-                        <div class="form-group">
+                <div class="mt-4">
+                    {{ $replies->links() }}
+                </div>
+
+                @if (auth()->check())
+                    <div class="mt-4">
+                        <form method="POST" action="{{ $issue->path() . '/replies' }}">
+                            {{ csrf_field() }}
+                            <div class="form-group">
                             <textarea class="form-control" name="body" id="body" rows="5"
                                       placeholder="Have you say something?"></textarea>
-                        </div>
+                            </div>
 
-                        <button class="btn btn-xs">Submit</button>
-                    </form>
+                            <button class="btn btn-xs">Submit</button>
+                        </form>
+                    </div>
+                @else
+                    <p class="text-center">Please <a href="{{ route('login') }}">sign in</a> to participate this issue!</p>
+                @endif
+            </div>
+
+            <div class="col-md-4">
+                <div class="card card-default">
+                    <div class="card-body">
+                        This issue was created {{ $issue->created_at->diffForHumans() }} by
+                        <a href="#">{{ $issue->creator->name }}</a> and currently has {{ $issue->replies_count }} {{ str_plural('comment', $issue->replies_count) }}.
+
+                    </div>
                 </div>
             </div>
-        @else
-            <p class="text-center">Please <a href="{{ route('login') }}">sign in</a> to participate this issue!</p>
-        @endif
+
+        </div>
     </div>
 @endsection

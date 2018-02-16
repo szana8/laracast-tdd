@@ -15,7 +15,7 @@
                                 <label for="category_id">Category:</label>
                                 <select name="category_id" id="category_id" class="form-control" required>
                                     <option value="">Please select one...</option>
-                                    @foreach (App\Category::all() as $category)
+                                    @foreach ($categories as $category)
                                         <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                                     @endforeach
                                 </select>

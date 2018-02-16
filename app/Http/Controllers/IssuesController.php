@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Filters\IssueFilters;
 use App\Issue;
+use App\User;
 use Illuminate\Http\Request;
 
 class IssuesController extends Controller
@@ -20,16 +22,18 @@ class IssuesController extends Controller
      * Display a listing of the resource.
      *
      * @param Category $category
+     * @param IssueFilters $filters
      * @return \Illuminate\Http\Response
      */
-    public function index(Category $category)
+    public function index(Category $category, IssueFilters $filters)
     {
+        $issues = Issue::latest()->filter($filters);
+
         if ($category->exists) {
-            $issues = $category->issues()->latest()->get();
+            $issues->where('category_id', $category->id);
         }
-        else {
-            $issues = Issue::latest()->get();
-        }
+
+        $issues = $issues->get();
 
         return view('issue.index', compact('issues'));
     }
@@ -76,7 +80,10 @@ class IssuesController extends Controller
      */
     public function show($category, Issue $issue)
     {
-        return view('issue.show', compact('issue'));
+        return view('issue.show',[
+            'issue' => $issue,
+            'replies' => $issue->replies()->paginate(20)
+        ]);
     }
 
     /**

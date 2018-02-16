@@ -28,7 +28,19 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item"><a href="/issues" class="nav-link">All Issues</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Issues
+                        </a>
+
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/issues">All Issues</a>
+                            @auth
+                                <a class="dropdown-item" href="/issues?by={{ auth()->user()->name }}">My Issues</a>
+                            @endauth
+                        </div>
+                    </li>
                     <li class="nav-item"><a href="/issues/create" class="nav-link">New Issue</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -37,7 +49,7 @@
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            @foreach (App\Category::all() as $category)
+                            @foreach ($categories as $category)
                                 <a class="dropdown-item" href="/issues/{{ $category->slug }}">{{ $category->name }}</a>
                             @endforeach
                         </div>
