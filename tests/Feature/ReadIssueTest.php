@@ -76,4 +76,20 @@ class ReadIssueTest extends TestCase
             ->assertSee($issueByJohn->summary)
             ->assertDontSee($issueNotByJohn->summary);
     }
+
+    /** @test */
+    function a_user_can_filter_issues_by_popularity()
+    {
+        $issueWithTwoReplies = create('App\Issue');
+        create('App\Reply', ['issue_id' => $issueWithTwoReplies->id], 2);
+
+        $issueWithThreeReplies = create('App\Issue');
+        create('App\Reply', ['issue_id' => $issueWithThreeReplies->id], 3);
+
+        $issueWithNoReplies = $this->issue;
+
+        $response = $this->getJson('/issues?popular=1')->json();
+
+        $this->assertEquals([3,2,0], array_column($response, 'replies_count'));
+    }
 }

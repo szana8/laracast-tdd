@@ -27,13 +27,11 @@ class IssuesController extends Controller
      */
     public function index(Category $category, IssueFilters $filters)
     {
-        $issues = Issue::latest()->filter($filters);
+        $issues = $this->getIssues($category, $filters);
 
-        if ($category->exists) {
-            $issues->where('category_id', $category->id);
+        if (request()->wantsJson()) {
+            return $issues;
         }
-
-        $issues = $issues->get();
 
         return view('issue.index', compact('issues'));
     }
@@ -118,5 +116,22 @@ class IssuesController extends Controller
     public function destroy(Issue $issue)
     {
         //
+    }
+
+    /**
+     * @param Category $category
+     * @param IssueFilters $filters
+     * @return mixed
+     */
+    public function getIssues(Category $category, IssueFilters $filters)
+    {
+        $issues = Issue::latest()->filter($filters);
+
+        if ($category->exists) {
+            $issues->where('category_id', $category->id);
+        }
+
+        $issues = $issues->get();
+        return $issues;
     }
 }

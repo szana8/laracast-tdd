@@ -12,8 +12,15 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <style>
+        body {padding-bottom: 100px;}
+        .level { display: flex; align-items: center; }
+        .flex { flex: 1; }
+    </style>
+
 </head>
-<body style="padding-bottom: 100px;">
+<body">
 <div id="app">
     <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
         <div class="container">
@@ -39,6 +46,8 @@
                             @auth
                                 <a class="dropdown-item" href="/issues?by={{ auth()->user()->name }}">My Issues</a>
                             @endauth
+
+                            <a class="dropdown-item" href="/issues?popular=1">Popular Issues</a>
                         </div>
                     </li>
                     <li class="nav-item"><a href="/issues/create" class="nav-link">New Issue</a></li>
