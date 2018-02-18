@@ -23,8 +23,12 @@ Route::get('issues', 'IssuesController@index');
 Route::get('issues/create', 'IssuesController@create');
 Route::post('issues', 'IssuesController@store');
 Route::get('issues/{category}/{issue}', 'IssuesController@show');
+Route::delete('issues/{category}/{issue}', 'IssuesController@destroy');
 Route::get('issues/{category}', 'IssuesController@index');
+
 Route::post('issues/{category}/{issue}/replies', 'RepliesController@store');
 
 Route::post('replies/{reply}/favorites', 'FavoritesController@store');
+
+Route::get('profiles/{user}', 'ProfilesController@show');
 

@@ -110,12 +110,22 @@ class IssuesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Issue  $issue
-     * @return \Illuminate\Http\Response
+     * @param $category
+     * @param  \App\Issue $issue
+     * @return void
+     * @throws \Exception
      */
-    public function destroy(Issue $issue)
+    public function destroy($category, Issue $issue)
     {
-        //
+        $this->authorize('update');
+
+        $issue->delete();
+
+        if (request()->wantsJson()) {
+            return response([], 204);
+        }
+
+        return redirect('/issues');
     }
 
     /**

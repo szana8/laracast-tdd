@@ -26,4 +26,14 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'name';
+    }
+
+    public function issues()
+    {
+        return $this->hasMany(Issue::class)->latest();
+    }
 }

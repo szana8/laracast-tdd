@@ -6,10 +6,23 @@
             <div class="col-md-8">
                 <div class="card card-default">
                     <div class="card-header">
-                        <a href="#">
-                            {{ $issue->creator->name }}
-                        </a> posted
-                        {{ $issue->summary }}
+                        <div class="level">
+                           <span class="flex">
+                               <a href="/profiles/{{ $issue->creator->name }}">
+                               {{ $issue->creator->name }}
+                           </a> posted
+                               {{ $issue->summary }}
+                           </span>
+
+                            @can('update', $issue)
+                                <form method="POST" action="{{ $issue->path() }}">
+                                    {{ csrf_field() }}
+                                    {{ method_field('DELETE') }}
+
+                                    <button class="btn btn-link">Delete Issue</button>
+                                </form>
+                            @endcan
+                        </div>
                     </div>
                     <div class="card-body">
                         {{ $issue->description }}
@@ -37,7 +50,8 @@
                         </form>
                     </div>
                 @else
-                    <p class="text-center">Please <a href="{{ route('login') }}">sign in</a> to participate this issue!</p>
+                    <p class="text-center">Please <a href="{{ route('login') }}">sign in</a> to participate this issue!
+                    </p>
                 @endif
             </div>
 
@@ -45,7 +59,8 @@
                 <div class="card card-default">
                     <div class="card-body">
                         This issue was created {{ $issue->created_at->diffForHumans() }} by
-                        <a href="#">{{ $issue->creator->name }}</a> and currently has {{ $issue->replies_count }} {{ str_plural('comment', $issue->replies_count) }}.
+                        <a href="/profiles/{{ $issue->creator->name }}">{{ $issue->creator->name }}</a> and currently
+                        has {{ $issue->replies_count }} {{ str_plural('comment', $issue->replies_count) }}.
 
                     </div>
                 </div>

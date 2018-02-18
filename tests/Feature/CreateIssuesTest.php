@@ -10,7 +10,7 @@ class CreateIssuesTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
-    public function a_guest_may_not_create_issues()
+    function a_guest_may_not_create_issues()
     {
         $this->get('/issues/create')
             ->assertRedirect('login');
@@ -19,8 +19,8 @@ class CreateIssuesTest extends TestCase
             ->assertRedirect('login');
     }
 
-   /** @test */
-    public function an_authenticated_user_can_create_new_issue()
+    /** @test */
+    function an_authenticated_user_can_create_new_issue()
     {
         $this->signIn();
 
@@ -59,15 +59,45 @@ class CreateIssuesTest extends TestCase
             ->assertSessionHasErrors('category_id');
     }
 
+    /** @test */
+    function authorized_user_can_delete_issues()
+    {
+        $this->signIn();
+
+        $issue = create('App\Issue', ['user_id' => auth()->id()]);
+        $reply = create('App\Reply', ['issue_id' => $issue->id]);
+
+        $response = $this->json('DELETE', $issue->path());
+
+        $response->assertStatus(204);
+
+        $this->assertDatabaseMissing('issues',['id' => $issue->id]);
+        $this->assertDatabaseMissing('replies',['id' => $reply->id]);
+    }
+
+    /** @test */
+    function unauthorized_users_may_not_delete_issues()
+    {
+        $issue = create('App\Issue');
+
+        $this->delete($issue->path())
+            ->assertRedirect('login');
+
+        $this->signIn();
+
+        $this->delete($issue->path())
+            ->assertStatus(403);
+    }
+
     /**
      * @param $overrides
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    public function publishIssue($overrides)
+    function publishIssue($overrides)
     {
         $this->signIn();
 
-        $issue = make('App\Issue',$overrides);
+        $issue = make('App\Issue', $overrides);
 
         return $this->post('/issues', $issue->toArray());
     }

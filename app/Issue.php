@@ -12,12 +12,18 @@ class Issue extends Model
 
     protected $guarded = [];
 
+    protected $with = ['creator', 'category'];
+
     protected static function boot()
     {
         parent::boot();
 
         static::addGlobalScope('replyCount', function ($builder) {
            $builder->withCount('replies');
+        });
+
+        static::deleting(function ($issue) {
+            $issue->replies()->delete();
         });
     }
 

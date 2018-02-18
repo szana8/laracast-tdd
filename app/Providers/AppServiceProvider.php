@@ -14,10 +14,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-//        \View::composer('issue.create', function ($view) {
-//            $view->with('categories', Category::all());
-//        });
-        \View::share('categories', Category::all());
+        \View::composer('*', function ($view) {
+            $categories = \Cache::rememberForever('categories', function () {
+               return  Category::all();
+            });
+
+            $view->with('categories', $categories);
+        });
     }
 
     /**
