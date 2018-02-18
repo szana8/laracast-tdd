@@ -26,3 +26,5 @@ Route::get('issues/{category}/{issue}', 'IssuesController@show');
 Route::get('issues/{category}', 'IssuesController@index');
 Route::post('issues/{category}/{issue}/replies', 'RepliesController@store');
 
+Route::post('replies/{reply}/favorites', 'FavoritesController@store');
+
