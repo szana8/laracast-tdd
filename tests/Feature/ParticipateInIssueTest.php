@@ -26,8 +26,7 @@ class ParticipateInIssueTest extends TestCase
 
         $this->post($issue->path() . '/replies', $reply->toArray());
 
-        $this->get($issue->path())
-            ->assertSee($reply->body);
+        $this->assertDatabaseHas('replies', ['body' => $reply->body]);
     }
 
     /** @test */

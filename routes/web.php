@@ -26,6 +26,7 @@ Route::get('issues/{category}/{issue}', 'IssuesController@show');
 Route::delete('issues/{category}/{issue}', 'IssuesController@destroy');
 Route::get('issues/{category}', 'IssuesController@index');
 
+Route::get('issues/{category}/{issue}/replies', 'RepliesController@index');
 Route::post('issues/{category}/{issue}/replies', 'RepliesController@store');
 Route::patch('replies/{reply}', 'RepliesController@update');
 Route::delete('replies/{reply}', 'RepliesController@destroy');

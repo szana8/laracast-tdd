@@ -44,15 +44,6 @@ class ReadIssueTest extends TestCase
     }
 
     /** @test */
-    function a_user_can_read_replies_that_are_associated_with_an_issue()
-    {
-        $reply = factory('App\Reply')->create(['issue_id' => $this->issue->id]);
-
-        $this->get($this->issue->path())
-            ->assertSee($reply->body);
-    }
-
-    /** @test */
     function a_user_can_filter_issues_according_to_a_category()
     {
         $category = create('App\Category');
@@ -91,5 +82,16 @@ class ReadIssueTest extends TestCase
         $response = $this->getJson('/issues?popular=1')->json();
 
         $this->assertEquals([3,2,0], array_column($response, 'replies_count'));
+    }
+
+    /** @test */
+    function a_user_can_request_all_replies_for_a_given_issue()
+    {
+        $issue = create('App\Issue');
+        create('App\Reply', ['issue_id' => $issue->id]);
+
+        $response = $this->getJson($issue->path() . '/replies')->json();
+
+        $this->assertCount(1, $response['data']);
     }
 }

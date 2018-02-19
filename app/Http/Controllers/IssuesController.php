@@ -78,21 +78,7 @@ class IssuesController extends Controller
      */
     public function show($category, Issue $issue)
     {
-        return view('issue.show',[
-            'issue' => $issue,
-            'replies' => $issue->replies()->paginate(20)
-        ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Issue  $issue
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Issue $issue)
-    {
-        //
+        return view('issue.show',compact('issue'));
     }
 
     /**

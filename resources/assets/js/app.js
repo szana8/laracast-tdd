@@ -17,6 +17,8 @@ window.Vue = require('vue');
  */
 
 Vue.component('flash', require('./components/Flash.vue'));
+Vue.component('paginator', require('./components/Paginator.vue'));
+
 Vue.component('issue-view', require('./pages/Issue.vue'));
 
 

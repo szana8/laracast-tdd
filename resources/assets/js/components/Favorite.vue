@@ -1,6 +1,6 @@
 <template>
     <button type="submit" :class="classes" @click="toggle">
-        <span class="material-icons">favorite</span>
+        <i class="material-icons">favorite</i>
         <span v-text="count"></span>
     </button>
 </template>

@@ -13,7 +13,12 @@ class RepliesController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except('index');
+    }
+
+    public function index($chanelId, Issue $issue)
+    {
+        return $issue->replies()->paginate(20);
     }
 
     /**
@@ -26,10 +31,14 @@ class RepliesController extends Controller
             'body' => 'required'
         ]);
 
-        $issue->addReply([
+        $reply = $issue->addReply([
             'body' => request('body'),
             'user_id' => auth()->id()
         ]);
+
+        if (request()->expectsJson()) {
+            return $reply->load('owner');
+        }
 
         return back()->with('flash', 'Your reply has been left.');
     }

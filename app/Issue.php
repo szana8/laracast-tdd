@@ -82,10 +82,11 @@ class Issue extends Model
      * Add a reply to the issue.
      *
      * @param $reply
+     * @return Model
      */
     public function addReply($reply)
     {
-        $this->replies()->create($reply);
+        return $this->replies()->create($reply);
     }
 
     /**
