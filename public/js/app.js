@@ -47565,6 +47565,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "issue",
 
+    props: ['initialRepliesCount'],
+
+    data: function data() {
+        return {
+            repliesCount: this.initialRepliesCount
+        };
+    },
+
+
     components: {
         Replies: __WEBPACK_IMPORTED_MODULE_0__components_Replies___default.a
     }
@@ -47655,6 +47664,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         remove: function remove(index) {
             this.items.splice(index, 1);
+
+            this.$emit('removed');
+
+            flash('Reply has been deleted.');
         }
     }
 });
@@ -47787,10 +47800,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios.delete('/replies/' + this.data.id);
 
             this.$emit('deleted', this.data.id);
-
-            // $(this.$el).fadeOut(300, () => {
-            //     flash('Your reply has been deleted.');
-            // });
         }
     }
 });
@@ -47950,7 +47959,7 @@ var render = function() {
             _c("small", [_vm._v("said " + _vm._s(_vm.data.created_at) + "...")])
           ]),
           _vm._v(" "),
-          _c("div")
+          _c("div", [_c("favorite", { attrs: { reply: _vm.data } })], 1)
         ])
       ]),
       _vm._v(" "),

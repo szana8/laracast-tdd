@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <issue-view inline-template>
+    <issue-view :initial-replies-count="{{ $issue->replies_count }}" inline-template>
         <div class="container">
             <div class="row">
                 <div class="col-md-8">
@@ -30,11 +30,7 @@
                         </div>
                     </div>
 
-                    <replies :data="{{ $issue->replies }}"></replies>
-
-                    {{--@foreach($replies as $reply)--}}
-                    {{--@include('issue.reply', $reply)--}}
-                    {{--@endforeach--}}
+                    <replies :data="{{ $issue->replies }}" @removed="repliesCount--"></replies>
 
                     {{--<div class="mt-4">--}}
                     {{--{{ $replies->links() }}--}}
@@ -63,7 +59,7 @@
                         <div class="card-body">
                             This issue was created {{ $issue->created_at->diffForHumans() }} by
                             <a href="/profiles/{{ $issue->creator->name }}">{{ $issue->creator->name }}</a> and currently
-                            has {{ $issue->replies_count }} {{ str_plural('comment', $issue->replies_count) }}.
+                            has <span v-text="repliesCount"></span> {{ str_plural('comment', $issue->replies_count) }}.
 
                         </div>
                     </div>

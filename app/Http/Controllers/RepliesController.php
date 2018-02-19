@@ -34,7 +34,7 @@ class RepliesController extends Controller
         return back()->with('flash', 'Your reply has been left.');
     }
 
-    /**
+    /**npm
      * @param Reply $reply
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
@@ -48,6 +48,8 @@ class RepliesController extends Controller
     }
 
     /**
+     * Delete the reply which belongs to an issue.
+     *
      * @param Reply $reply
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
