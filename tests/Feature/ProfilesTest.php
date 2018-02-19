@@ -21,11 +21,13 @@ class ProfilesTest extends TestCase
     /** @test */
     function profiles_display_all_issues_created_by_the_associated_user()
     {
+        $this->signIn();
+
         $user = create('App\User');
 
-        $issue = create('App\Issue', ['user_id' => $user->id]);
+        $issue = create('App\Issue', ['user_id' => auth()->id()]);
 
-        $this->get("/profiles/{$user->name}")
+        $this->get("/profiles/". auth()->user()->name)
             ->assertSee($issue->summary)
             ->assertSee($issue->description);
     }

@@ -4,16 +4,25 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * @property mixed id
- */
+
 class Issue extends Model
 {
 
+    use RecordsActivity;
+
+    /**
+     * @var array
+     */
     protected $guarded = [];
 
+    /**
+     * @var array
+     */
     protected $with = ['creator', 'category'];
 
+    /**
+     * Boot the model.
+     */
     protected static function boot()
     {
         parent::boot();
@@ -23,12 +32,12 @@ class Issue extends Model
         });
 
         static::deleting(function ($issue) {
-            $issue->replies()->delete();
+            $issue->replies->each->delete();
         });
     }
 
     /**
-     * The url of the issue.
+     * Get the string path of the issue.
      *
      * @return string
      */

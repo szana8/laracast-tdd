@@ -11,7 +11,7 @@ class FavoritesTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
-    public function guest_can_not_favorite_anything()
+    function guest_can_not_favorite_anything()
     {
         $this->post('replies/1/favorites')
             ->assertRedirect('login');
@@ -19,7 +19,7 @@ class FavoritesTest extends TestCase
 
 
     /** @test */
-    public function an_authenticated_user_can_favorite_any_reply()
+    function an_authenticated_user_can_favorite_any_reply()
     {
         $this->signIn();
 
@@ -31,7 +31,7 @@ class FavoritesTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_user_may_only_favorite_a_reply_once()
+    function an_authenticated_user_may_only_favorite_a_reply_once()
     {
         $this->signIn();
 
@@ -46,5 +46,19 @@ class FavoritesTest extends TestCase
         }
 
         $this->assertCount(1, $reply->favorites);
+    }
+
+    /** @test */
+    function an_authenticated_user_can_unfavorite_a_reply()
+    {
+        $this->signIn();
+
+        $reply = create('App\Reply');
+
+        $reply->favorite();
+
+        $this->delete('replies/' . $reply->id . '/favorites');
+
+        $this->assertCount(0, $reply->favorites);
     }
 }

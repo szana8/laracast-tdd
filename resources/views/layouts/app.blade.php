@@ -13,10 +13,14 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+
     <style>
         body {padding-bottom: 100px;}
         .level { display: flex; align-items: center; }
         .flex { flex: 1; }
+        [v-cloak] { display: none; }
     </style>
 
 </head>
@@ -27,6 +31,8 @@
     <main class="py-4">
         @yield('content')
     </main>
+
+    <flash message="{{ session('flash') }}"></flash>
 </div>
 
 <!-- Scripts -->

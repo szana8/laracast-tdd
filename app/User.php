@@ -27,13 +27,31 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    /**
+     * Get the route key name for Laravel.
+     *
+     * @return string
+     */
     public function getRouteKeyName()
     {
         return 'name';
     }
 
+    /**
+     * Fetch all issues that are created by the user.
+     *
+     * @return string
+     */
     public function issues()
     {
         return $this->hasMany(Issue::class)->latest();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function activity()
+    {
+        return $this->hasMany(Activity::class);
     }
 }

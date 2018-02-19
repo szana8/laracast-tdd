@@ -67,7 +67,7 @@ class IssuesController extends Controller
             'description' => request('description')
         ]);
 
-        return redirect($issue->path());
+        return redirect($issue->path())->with('flash', 'Your issue published!');
     }
 
     /**
@@ -117,7 +117,7 @@ class IssuesController extends Controller
      */
     public function destroy($category, Issue $issue)
     {
-        $this->authorize('update');
+        $this->authorize('update', $issue);
 
         $issue->delete();
 

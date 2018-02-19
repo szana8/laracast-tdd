@@ -71,8 +71,18 @@ class CreateIssuesTest extends TestCase
 
         $response->assertStatus(204);
 
-        $this->assertDatabaseMissing('issues',['id' => $issue->id]);
-        $this->assertDatabaseMissing('replies',['id' => $reply->id]);
+        $this->assertDatabaseMissing('issues', ['id' => $issue->id]);
+        $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+
+        $this->assertDatabaseMissing('activities', [
+            'subject_id' => $issue->id,
+            'subject_type' => get_class($issue)
+        ]);
+
+        $this->assertDatabaseMissing('activities', [
+            'subject_id' => $reply->id,
+            'subject_type' => get_class($reply)
+        ]);
     }
 
     /** @test */

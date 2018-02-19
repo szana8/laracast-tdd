@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Issue;
+use App\Reply;
 
 
 class RepliesController extends Controller
@@ -12,7 +13,7 @@ class RepliesController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['web', 'auth'])->only('store');
+        $this->middleware('auth');
     }
 
     /**
@@ -29,6 +30,38 @@ class RepliesController extends Controller
             'body' => request('body'),
             'user_id' => auth()->id()
         ]);
+
+        return back()->with('flash', 'Your reply has been left.');
+    }
+
+    /**
+     * @param Reply $reply
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function update(Reply $reply)
+    {
+        $this->authorize('update', $reply);
+
+        $reply->update([
+            'body' => request('body')
+        ]);
+    }
+
+    /**
+     * @param Reply $reply
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function destroy(Reply $reply)
+    {
+        $this->authorize('update', $reply);
+
+        $reply->delete();
+
+        if (request()->wantsJson()) {
+            return response(['status' => 'Status deleted.']);
+        }
 
         return back();
     }

@@ -16,6 +16,8 @@ class FavoritesController extends Controller
     }
 
     /**
+     * Store a new favorite in the database.
+     *
      * @param Reply $reply
      * @return mixed
      */
@@ -24,5 +26,10 @@ class FavoritesController extends Controller
         $reply->favorite();
 
         return back();
+    }
+
+    public function destroy(Reply $reply)
+    {
+        $reply->unFavorite();
     }
 }

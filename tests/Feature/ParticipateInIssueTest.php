@@ -40,4 +40,54 @@ class ParticipateInIssueTest extends TestCase
 
         $this->post($issue->path() . '/replies', $reply->toArray())->assertSessionHasErrors('body');
     }
+
+    /** @test */
+    function unauthorized_user_cannot_delete_replies()
+    {
+        $reply = create('App\Reply');
+
+        $this->delete("/replies/{$reply->id}")
+            ->assertRedirect('login');
+
+        $this->signIn();
+
+        $this->delete("/replies/{$reply->id}")
+            ->assertStatus(403);
+    }
+
+    /** @test */
+    function authorized_user_can_delete_replies()
+    {
+        $this->signIn();
+        $reply = create('App\Reply', ['user_id' => auth()->id()]);
+
+        $this->delete("/replies/{$reply->id}")->assertStatus(302);
+
+        $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+    }
+
+    /** @test */
+    function authorized_users_can_updates_replies()
+    {
+        $this->signIn();
+
+        $reply = create('App\Reply', ['user_id' => auth()->id()]);
+
+        $this->patch("/replies/{$reply->id}", ['body' => 'FooBar']);
+
+        $this->assertDatabaseHas('replies', ['id' => $reply->id, 'body' => 'FooBar']);
+    }
+
+    /** @test */
+    function unauthorized_user_cannot_update_replies()
+    {
+        $reply = create('App\Reply');
+
+        $this->patch("/replies/{$reply->id}")->assertRedirect('login');
+
+        $this->signIn();
+
+        $this->patch("/replies/{$reply->id}")
+            ->assertStatus(403);
+    }
 }

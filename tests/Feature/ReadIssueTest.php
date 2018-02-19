@@ -30,21 +30,21 @@ class ReadIssueTest extends TestCase
     }
 
     /** @test */
-    public function a_user_can_browse_issues()
+    function a_user_can_browse_issues()
     {
         $this->get('/issues')
             ->assertSee($this->issue->summary);
     }
 
     /** @test */
-    public function a_user_can_read_a_single_issue()
+    function a_user_can_read_a_single_issue()
     {
         $this->get($this->issue->path())
             ->assertSee($this->issue->summary);
     }
 
     /** @test */
-    public function a_user_can_read_replies_that_are_associated_with_an_issue()
+    function a_user_can_read_replies_that_are_associated_with_an_issue()
     {
         $reply = factory('App\Reply')->create(['issue_id' => $this->issue->id]);
 

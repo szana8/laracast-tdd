@@ -6,32 +6,20 @@
             <div class="col-md-8">
                 <h2 class="display-5">
                     {{ $profileUser->name }}
-                    <small class="text-muted"> Since {{ $profileUser->created_at->diffForHumans() }}</small>
                 </h2>
 
-                @foreach($issues as $issue)
-                    <div class="card card-default mt-4">
-                        <div class="card-header">
-                            <div class="level">
-                                <span class="flex">
-                                    <a href="#">{{ $issue->creator->name }}</a> posted:
-                                    <a href="{{ $issue->path() }}">{{ $issue->summary }}</a>
-                                </span>
-                                <span>
-                                    {{ $issue->created_at->diffForHumans() }}...
-                                </span>
-                            </div>
-                        </div>
+                @forelse($activities as $date => $activity)
+                    <h3 class="page-header">{{ $date }}</h3>
 
-                        <div class="card-body">
-                            {{ $issue->description }}
-                        </div>
-                    </div>
-                @endforeach
+                    @foreach($activity as $record)
+                        @if (view()->exists("profiles.activities.{$record->type}"))
+                            @include("profiles.activities.{$record->type}", ['activity' => $record])
+                        @endif
+                    @endforeach
+                @empty
+                    <p>There is no activity for this user.</p>
+                @endforelse
 
-                <div class="mt-4">
-                    {{ $issues->links() }}
-                </div>
             </div>
         </div>
     </div>
