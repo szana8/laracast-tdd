@@ -85,6 +85,17 @@ class ReadIssueTest extends TestCase
     }
 
     /** @test */
+    function a_user_can_filter_issues_by_those_that_are_unanswered()
+    {
+        $issue = create('App\Issue');
+        create('App\Reply', ['issue_id' => $issue->id]);
+
+        $response = $this->getJson('/issues?unanswered=1')->json();
+
+        $this->assertCount(1, $response);
+    }
+
+    /** @test */
     function a_user_can_request_all_replies_for_a_given_issue()
     {
         $issue = create('App\Issue');

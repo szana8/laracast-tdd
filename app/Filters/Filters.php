@@ -47,12 +47,6 @@ abstract class Filters
                 $this->$filter($value);
             });
 
-//        foreach ($this->getFilters() as $filter => $value) {
-//            if (method_exists($this, $filter)) {
-//                $this->$filter($value);
-//            }
-//        }
-
         return $this->builder;
     }
 

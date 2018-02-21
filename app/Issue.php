@@ -21,15 +21,20 @@ class Issue extends Model
     protected $with = ['creator', 'category'];
 
     /**
+     * @var array
+     */
+    protected $appends = ['isSubscribedTo'];
+
+    /**
      * Boot the model.
      */
     protected static function boot()
     {
         parent::boot();
 
-        static::addGlobalScope('replyCount', function ($builder) {
-           $builder->withCount('replies');
-        });
+//        static::addGlobalScope('replyCount', function ($builder) {
+//           $builder->withCount('replies');
+//        });
 
         static::deleting(function ($issue) {
             $issue->replies->each->delete();
@@ -57,7 +62,6 @@ class Issue extends Model
     }
 
 
-
     /**
      * An issue belongs to a creator.
      *
@@ -71,7 +75,7 @@ class Issue extends Model
     /**
      * An issue belongs to a category.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function category()
     {
@@ -99,5 +103,44 @@ class Issue extends Model
     public function scopeFilter($query, $filters)
     {
         return $filters->apply($query);
+    }
+
+    /**
+     * A user can subscribe to an issue.
+     *
+     * @param null $userId
+     */
+    public function subscribe($userId = null)
+    {
+        $this->subscriptions()->create([
+            'user_id' => $userId ?: auth()->id()
+        ]);
+    }
+
+    /**
+     * A user can unsubscribe from an issue.
+     *
+     * @param null $userId
+     */
+    public function unSubscribe($userId = null)
+    {
+        $this->subscriptions()
+            ->where('user_id', $userId ?: auth()->id())
+            ->delete();
+    }
+
+    /**
+     * An issue has many subscribers.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function subscriptions()
+    {
+        return $this->hasMany(IssueSubscription::class);
+    }
+
+    public function getIsSubscribedToAttribute()
+    {
+        return $this->subscriptions()->where('user_id', auth()->id())->exists();
     }
 }

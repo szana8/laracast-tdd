@@ -30,9 +30,12 @@ Route::get('issues/{category}/{issue}/replies', 'RepliesController@index');
 Route::post('issues/{category}/{issue}/replies', 'RepliesController@store');
 Route::patch('replies/{reply}', 'RepliesController@update');
 Route::delete('replies/{reply}', 'RepliesController@destroy');
-
 Route::post('replies/{reply}/favorites', 'FavoritesController@store');
 Route::delete('replies/{reply}/favorites', 'FavoritesController@destroy');
+
+Route::post('issues/{category}/{issue}/subscriptions', 'IssueSubscribeController@store')->middleware('auth');
+Route::delete('issues/{category}/{issue}/subscriptions', 'IssueSubscribeController@destroy')->middleware('auth');
+
 
 Route::get('profiles/{user}', 'ProfilesController@show');
 

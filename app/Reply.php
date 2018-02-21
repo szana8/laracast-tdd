@@ -28,6 +28,23 @@ class Reply extends Model
     protected $appends = ['favoritesCount', 'isFavorited'];
 
     /**
+     * Boot the model.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($reply) {
+            $reply->issue->increment('replies_count');
+        });
+
+        static::deleted(function ($reply) {
+            $reply->issue->decrement('replies_count');
+        });
+    }
+
+
+    /**
      * A reply has an owner.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

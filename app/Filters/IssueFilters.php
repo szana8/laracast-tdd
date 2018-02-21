@@ -10,7 +10,7 @@ class IssueFilters extends Filters
     /**
      * @var array
      */
-    protected $filters = ['by', 'popular'];
+    protected $filters = ['by', 'popular', 'unanswered'];
 
     /**
      * Filter the query by the given username.
@@ -26,6 +26,8 @@ class IssueFilters extends Filters
     }
 
     /**
+     * Filter the query according the most popular issues.
+     *
      * @return mixed
      */
     public function popular()
@@ -33,6 +35,16 @@ class IssueFilters extends Filters
         $this->builder->getQuery()->orders = [];
 
         return $this->builder->orderBy('replies_count', 'desc');
+    }
+
+    /**
+     * Filter the query according the most unanswered issues.
+     *
+     * @return mixed
+     */
+    public function unanswered()
+    {
+        return $this->builder->where('replies_count', 0);
     }
 
 }

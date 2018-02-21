@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateIssuesTable extends Migration
+class CreateIssueSubscriptionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,18 @@ class CreateIssuesTable extends Migration
      */
     public function up()
     {
-        Schema::create('issues', function (Blueprint $table) {
+        Schema::create('issue_subscriptions', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
-            $table->unsignedInteger('category_id');
-            $table->unsignedInteger('replies_count')->default(0);
-            $table->string('summary', 200);
-            $table->longText('description');
+            $table->unsignedInteger('issue_id');
             $table->timestamps();
+
+            $table->unique(['user_id', 'issue_id']);
+
+            $table->foreign('issue_id')
+                ->references('id')
+                ->on('issues')
+                ->onDelete('cascade');
         });
     }
 
@@ -31,6 +35,6 @@ class CreateIssuesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('issues');
+        Schema::dropIfExists('issue_subscriptions');
     }
 }

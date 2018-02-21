@@ -22,11 +22,12 @@ class ParticipateInIssueTest extends TestCase
         $this->signIn();
 
         $issue = create('App\Issue');
-        $reply = factory('App\Reply')->create(['issue_id' => $issue->id]);
+        $reply = factory('App\Reply')->make(['issue_id' => $issue->id]);
 
         $this->post($issue->path() . '/replies', $reply->toArray());
 
         $this->assertDatabaseHas('replies', ['body' => $reply->body]);
+        $this->assertEquals(1, $issue->fresh()->replies_count);
     }
 
     /** @test */
@@ -63,6 +64,7 @@ class ParticipateInIssueTest extends TestCase
         $this->delete("/replies/{$reply->id}")->assertStatus(302);
 
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+        $this->assertEquals(0, $reply->issue->fresh()->replies_count);
     }
 
     /** @test */

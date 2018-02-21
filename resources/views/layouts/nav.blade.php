@@ -24,6 +24,7 @@
                         @endauth
 
                         <a class="dropdown-item" href="/issues?popular=1">Popular Issues</a>
+                        <a class="dropdown-item" href="/issues?unanswered=1">Unanswered Issues</a>
                     </div>
                 </li>
                 <li class="nav-item"><a href="/issues/create" class="nav-link">New Issue</a></li>
