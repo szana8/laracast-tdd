@@ -6,7 +6,7 @@ namespace App;
 trait Favoritable
 {
     /**
-     *
+     * Boot the trait.
      */
     protected static function bootFavoritable()
     {
@@ -61,6 +61,8 @@ trait Favoritable
     }
 
     /**
+     * Fetch the favorited status as a property.
+     *
      * @return bool
      */
     public function getIsFavoritedAttribute()

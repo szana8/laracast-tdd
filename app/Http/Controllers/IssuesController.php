@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Filters\IssueFilters;
 use App\Issue;
+use App\Rules\SpamFree;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -56,8 +57,8 @@ class IssuesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'summary' => 'required',
-            'description' => 'required',
+            'summary' => ['required', new SpamFree()],
+            'description' => ['required', new SpamFree()],
             'category_id' => 'required|exists:categories,id'
         ]);
 

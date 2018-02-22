@@ -7,22 +7,32 @@ use App\Notifications\IssueWasUpdated;
 use Illuminate\Database\Eloquent\Model;
 
 
+/**
+ * @property mixed category
+ * @property mixed id
+ */
 class Issue extends Model
 {
 
     use RecordsActivity;
 
     /**
+     * Don't auto-apply mass assignment protection.
+     *
      * @var array
      */
     protected $guarded = [];
 
     /**
+     * The relationships to always eager-load.
+     *
      * @var array
      */
     protected $with = ['creator', 'category'];
 
     /**
+     * The accessors to append to the model's array form.
+     *
      * @var array
      */
     protected $appends = ['isSubscribedTo'];
@@ -33,10 +43,6 @@ class Issue extends Model
     protected static function boot()
     {
         parent::boot();
-
-//        static::addGlobalScope('replyCount', function ($builder) {
-//           $builder->withCount('replies');
-//        });
 
         static::deleting(function ($issue) {
             $issue->replies->each->delete();
@@ -54,7 +60,7 @@ class Issue extends Model
     }
 
     /**
-     * An issue has many replies.
+     * An issue may have many replies.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -75,7 +81,7 @@ class Issue extends Model
     }
 
     /**
-     * An issue belongs to a category.
+     * An issue is assigned a channel.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -100,6 +106,18 @@ class Issue extends Model
     }
 
     /**
+     * Apply all relevant issue filters.
+     *
+     * @param $query
+     * @param $filters
+     * @return mixed
+     */
+    public function scopeFilter($query, $filters)
+    {
+        return $filters->apply($query);
+    }
+
+    /**
      * Notify the subscribers for the new reply.
      *
      * @param $reply
@@ -110,18 +128,6 @@ class Issue extends Model
             ->where('user_id', '!=', $reply->user_id)
             ->each
             ->notify($reply);
-    }
-
-    /**
-     * Apply all relevant issue filters.
-     *
-     * @param $query
-     * @param $filters
-     * @return mixed
-     */
-    public function scopeFilter($query, $filters)
-    {
-        return $filters->apply($query);
     }
 
     /**

@@ -38,7 +38,8 @@ class ParticipateInIssueTest extends TestCase
         $issue = create('App\Issue');
         $reply = make('App\Reply', ['issue_id' => $issue->id, 'body' => null]);
 
-        $this->post($issue->path() . '/replies', $reply->toArray())->assertSessionHasErrors('body');
+        $this->json('post', $issue->path() . '/replies', $reply->toArray())
+            ->assertStatus(422);
     }
 
     /** @test */
@@ -90,5 +91,40 @@ class ParticipateInIssueTest extends TestCase
 
         $this->patch("/replies/{$reply->id}")
             ->assertStatus(403);
+    }
+
+    /** @test */
+    function replies_that_contain_spam_may_not_be_created()
+    {
+        $this->signIn();
+
+        $issue = create('App\Issue');
+
+        $reply = create('App\Reply', [
+            'issue_id' => $issue->id,
+            'body' => 'Yahoo Customer Support'
+        ]);
+
+        $this->json('post', $issue->path() . '/replies', $reply->toArray())
+            ->assertStatus(422);
+    }
+
+    /** @test */
+    function users_may_only_reply_a_maximum_of_once_per_minute()
+    {
+        $this->signIn();
+
+        $issue = create('App\Issue');
+
+        $reply = create('App\Reply', [
+            'issue_id' => $issue->id,
+            'body' => 'Simple reply'
+        ]);
+
+        $this->post($issue->path() . '/replies', $reply->toArray())
+            ->assertStatus(201);
+
+        $this->post($issue->path() . '/replies', $reply->toArray())
+            ->assertStatus(429);
     }
 }

@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Http\Requests\CreatePostRequest;
 use App\Issue;
 use App\Reply;
+use App\Rules\SpamFree;
+use Illuminate\Support\Facades\Gate;
 
 
 class RepliesController extends Controller
@@ -16,44 +20,51 @@ class RepliesController extends Controller
         $this->middleware('auth')->except('index');
     }
 
+    /**
+     * @param $chanelId
+     * @param Issue $issue
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
     public function index($chanelId, Issue $issue)
     {
         return $issue->replies()->paginate(20);
     }
 
     /**
+     * Persist a new reply.
+     *
+     * @param $categoryId
      * @param Issue $issue
-     * @return \Illuminate\Http\RedirectResponse
+     * @param CreatePostRequest $form
+     * @return \Illuminate\Database\Eloquent\Model
      */
-    public function store($categoryId, Issue $issue)
+    public function store($categoryId, Issue $issue, CreatePostRequest $form)
     {
-        $this->validate(request(), [
-            'body' => 'required'
-        ]);
-
-        $reply = $issue->addReply([
+        return $issue->addReply([
             'body' => request('body'),
             'user_id' => auth()->id()
-        ]);
-
-        if (request()->expectsJson()) {
-            return $reply->load('owner');
-        }
-
-        return back()->with('flash', 'Your reply has been left.');
+        ])->load('owner');
     }
 
-    /**npm
+    /**
      * @param Reply $reply
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Reply $reply)
     {
         $this->authorize('update', $reply);
 
-        $reply->update([
-            'body' => request('body')
-        ]);
+        try {
+            $this->validate(request(), ['body' => 'required']);
+
+            $reply->update([
+                'body' => request('body')
+            ]);
+        } catch (\Exception $e) {
+            return response('Sorry your reply could not be updated at this time', 422);
+        }
     }
 
     /**
@@ -76,4 +87,5 @@ class RepliesController extends Controller
 
         return back();
     }
+
 }
