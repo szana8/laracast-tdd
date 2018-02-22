@@ -9,7 +9,13 @@
                         <div class="card-header">
                             <div class="level">
                                 <h4 class="flex">
-                                    <a href="{{ $issue->path() }}">{{ $issue->summary }}</a>
+                                    <a href="{{ $issue->path() }}">
+                                        @if (auth()->check() && $issue->hasUpdateFor(auth()->user()))
+                                            <strong>{{ $issue->summary }}</strong>
+                                        @else
+                                            {{ $issue->summary }}
+                                        @endif
+                                    </a>
                                 </h4>
                                 <a href="{{ $issue->path() }}">
                                     {{ $issue->replies_count }} {{ str_plural('reply', $issue->replies_count) }}

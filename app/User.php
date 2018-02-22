@@ -54,4 +54,25 @@ class User extends Authenticatable
     {
         return $this->hasMany(Activity::class);
     }
+
+    /**
+     * @param $issue
+     * @return string
+     */
+    public function visitedIssueCacheKey($issue)
+    {
+        return sprintf("users.%s.visits.%s", $this->id, $issue->id);
+    }
+
+    /**
+     * @param $issue
+     * @throws \Exception
+     */
+    public function read($issue)
+    {
+        cache()->forever(
+            $this->visitedIssueCacheKey($issue),
+            \Carbon\Carbon::now()
+        );
+    }
 }

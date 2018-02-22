@@ -2,6 +2,9 @@
 
 namespace Tests\Unit;
 
+use App\Notifications\IssueWasUpdated;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -40,6 +43,22 @@ class IssueTest extends TestCase
         ]);
 
         $this->assertCount(1, $this->issue->replies);
+    }
+
+    /** @test */
+    function an_issue_notifies_all_registered_subscribers_when_a_reply_is_added()
+    {
+        Notification::fake();
+
+        $this->signIn()
+            ->issue
+            ->subscribe()
+            ->addReply([
+                'body' => 'FooBar',
+                'user_id' => 1
+            ]);
+
+        Notification::assertSentTo(auth()->user(), IssueWasUpdated::class);
     }
 
     /** @test */
@@ -82,6 +101,24 @@ class IssueTest extends TestCase
         $issue->subscribe();
 
         $this->assertTrue($issue->isSubscribedTo);
+    }
+
+    /** @test */
+    function an_issue_can_check_if_the_authenticated_user_has_read_all_replies()
+    {
+        $this->signIn();
+
+        $issue = create('App\Issue');
+
+        tap(auth()->user(), function($user) use ($issue) {
+            $this->assertTrue($issue->hasUpdateFor($user));
+
+            $user->read($issue);
+
+            $this->assertFalse($issue->hasUpdateFor($user));
+        });
+
+
     }
 
 }

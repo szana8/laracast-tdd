@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Events\IssueHasNewReply;
+use App\Notifications\IssueWasUpdated;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -90,7 +92,24 @@ class Issue extends Model
      */
     public function addReply($reply)
     {
-        return $this->replies()->create($reply);
+        $reply = $this->replies()->create($reply);
+
+        $this->notifySubscribers($reply);
+
+        return $reply;
+    }
+
+    /**
+     * Notify the subscribers for the new reply.
+     *
+     * @param $reply
+     */
+    public function notifySubscribers($reply)
+    {
+        $this->subscriptions
+            ->where('user_id', '!=', $reply->user_id)
+            ->each
+            ->notify($reply);
     }
 
     /**
@@ -109,12 +128,15 @@ class Issue extends Model
      * A user can subscribe to an issue.
      *
      * @param null $userId
+     * @return Issue
      */
     public function subscribe($userId = null)
     {
         $this->subscriptions()->create([
             'user_id' => $userId ?: auth()->id()
         ]);
+
+        return $this;
     }
 
     /**
@@ -139,8 +161,23 @@ class Issue extends Model
         return $this->hasMany(IssueSubscription::class);
     }
 
+    /**
+     * Is the authenticated user subscribed to the issue.
+     *
+     * @return bool
+     */
     public function getIsSubscribedToAttribute()
     {
         return $this->subscriptions()->where('user_id', auth()->id())->exists();
+    }
+
+    /**
+     * @param $user
+     * @return bool
+     * @throws \Exception
+     */
+    public function hasUpdateFor($user)
+    {
+        return $this->updated_at > cache($user->visitedIssueCacheKey($this));
     }
 }

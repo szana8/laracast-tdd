@@ -18,14 +18,7 @@ class SubscribeToIssuesTest extends TestCase
 
         $this->post($issue->path() . '/subscriptions');
 
-        $issue->addReply([
-            'user_id' => auth()->id(),
-            'body' => 'Some reply here'
-        ]);
-
-//        auth()->user()->notifications;
-
-//        $this->assertDatabaseHas('', $issue->subscriptions);
+        $this->assertCount(1, $issue->fresh()->subscriptions);
     }
 
     /** @test */

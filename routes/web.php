@@ -38,4 +38,6 @@ Route::delete('issues/{category}/{issue}/subscriptions', 'IssueSubscribeControll
 
 
 Route::get('profiles/{user}', 'ProfilesController@show');
+Route::get('profiles/{user}/notifications', 'UserNotificationsController@index');
+Route::delete('profiles/{user}/notifications/{notification}', 'UserNotificationsController@destroy');
 

@@ -6,6 +6,7 @@ use App\Category;
 use App\Filters\IssueFilters;
 use App\Issue;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class IssuesController extends Controller
@@ -73,11 +74,17 @@ class IssuesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Issue  $issue
+     * @param $category
+     * @param  \App\Issue $issue
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function show($category, Issue $issue)
     {
+        if (auth()->check()) {
+            auth()->user()->read($issue);
+        }
+
         return view('issue.show',compact('issue'));
     }
 
