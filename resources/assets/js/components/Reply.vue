@@ -4,7 +4,7 @@
             <div class="level">
                 <h5 class="flex">
                     <a :href="'/profiles/' + data.owner.owner"
-                       v-text="data.owner.name">
+                       v-test="data.owner.name">
                     </a>
                     <small>said <span v-text="ago"></span></small>
                 </h5>
@@ -18,20 +18,22 @@
         </div>
         <div class="card-body">
             <div v-if="editing">
-                <div class="form-group">
-                    <textarea class="form-control" v-model="body"></textarea>
-                </div>
-                <button class="btn btn-primary btn-sm" @click="update">Update</button>
-                <button class="btn btn-link btn-sm" @click="editing = false">Cancel</button>
+                <form @submit.prevent="update">
+                    <div class="form-group">
+                        <textarea class="form-control" v-model="body" required></textarea>
+                    </div>
+                    <button class="btn btn-primary btn-sm">Update</button>
+                    <button class="btn btn-link btn-sm" @click="editing = false">Cancel</button>
+                </form>
             </div>
 
-            <div v-else v-text="body"></div>
+            <div v-else v-html="body"></div>
         </div>
 
 
         <div class="card-footer level" v-if="canUpdate">
             <button class="btn btn-default btn-sm mr-1" @click="editing = true">Edit</button>
-            <button class="btn btn-danger btn-sm mr-1" @click="destroy">Delete</button>
+            <button class="btn btn-danger btn-sm mr-1" type="button" @click="destroy">Delete</button>
         </div>
 
     </div>

@@ -66,6 +66,24 @@ class Reply extends Model
     }
 
     /**
+     * @return mixed
+     */
+    public function wasJustPublished()
+    {
+        return $this->created_at->gt(Carbon::now()->subMinute());
+    }
+
+    /**
+     * @return mixed
+     */
+    public function mentionedUsers()
+    {
+        preg_match_all('/@([\w\-]+)/', $this->body, $matches);
+
+        return $matches[1];
+    }
+
+    /**
      * Get the string path of the reply.
      *
      * @return string
@@ -75,8 +93,13 @@ class Reply extends Model
         return $this->issue->path() . "#reply-{$this->id}";
     }
 
-    public function wasJustPublished()
+    /**
+     * Replace the user with anchor tag to link.
+     *
+     * @param $body
+     */
+    public function setBodyAttribute($body)
     {
-        return $this->created_at->gt(Carbon::now()->subMinute());
+        $this->attributes['body'] = preg_replace('/@([\w\-]+)/', '<a href="/profiles/$1">$0</a>', $body);
     }
 }

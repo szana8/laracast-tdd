@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Http\Requests\CreatePostRequest;
 use App\Issue;
 use App\Reply;
-use App\Rules\SpamFree;
-use Illuminate\Support\Facades\Gate;
-
 
 class RepliesController extends Controller
 {
@@ -48,23 +44,18 @@ class RepliesController extends Controller
 
     /**
      * @param Reply $reply
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
-     * @throws \Exception
+     * @return void
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Reply $reply)
     {
         $this->authorize('update', $reply);
 
-        try {
-            $this->validate(request(), ['body' => 'required']);
+        $this->validate(request(), ['body' => 'required']);
 
-            $reply->update([
-                'body' => request('body')
-            ]);
-        } catch (\Exception $e) {
-            return response('Sorry your reply could not be updated at this time', 422);
-        }
+        $reply->update([
+            'body' => request('body')
+        ]);
     }
 
     /**
@@ -87,5 +78,4 @@ class RepliesController extends Controller
 
         return back();
     }
-
 }

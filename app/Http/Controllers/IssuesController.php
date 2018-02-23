@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 class IssuesController extends Controller
 {
     /**
-     * IssuesController constructor.
+     * Create new IssueController instance.
      */
     public function __construct()
     {
@@ -87,18 +87,6 @@ class IssuesController extends Controller
         }
 
         return view('issue.show',compact('issue'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Issue  $issue
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Issue $issue)
-    {
-        //
     }
 
     /**

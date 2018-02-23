@@ -3,9 +3,8 @@
 namespace App;
 
 use App\Events\IssueHasNewReply;
-use App\Notifications\IssueWasUpdated;
+use App\Events\IssueReceivedNewReply;
 use Illuminate\Database\Eloquent\Model;
-
 
 /**
  * @property mixed category
@@ -100,7 +99,7 @@ class Issue extends Model
     {
         $reply = $this->replies()->create($reply);
 
-        $this->notifySubscribers($reply);
+        event(new IssueReceivedNewReply($reply));
 
         return $reply;
     }
@@ -115,19 +114,6 @@ class Issue extends Model
     public function scopeFilter($query, $filters)
     {
         return $filters->apply($query);
-    }
-
-    /**
-     * Notify the subscribers for the new reply.
-     *
-     * @param $reply
-     */
-    public function notifySubscribers($reply)
-    {
-        $this->subscriptions
-            ->where('user_id', '!=', $reply->user_id)
-            ->each
-            ->notify($reply);
     }
 
     /**
