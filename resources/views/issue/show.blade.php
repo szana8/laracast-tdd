@@ -12,12 +12,13 @@
                     <div class="card card-default">
                         <div class="card-header">
                             <div class="level">
-                           <span class="flex">
+                            <span class="flex">
+                              <img src="{{ $issue->creator->avatar_path }}" width="25" height="25" class="mr-1">
                                <a href="/profiles/{{ $issue->creator->name }}">
                                {{ $issue->creator->name }}
-                           </a> posted
+                                </a> posted
                                {{ $issue->summary }}
-                           </span>
+                            </span>
 
                                 @can('update', $issue)
                                     <form method="POST" action="{{ $issue->path() }}">
