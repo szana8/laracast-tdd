@@ -81,7 +81,7 @@ class ReadIssueTest extends TestCase
 
         $response = $this->getJson('/issues?popular=1')->json();
 
-        $this->assertEquals([3,2,0], array_column($response, 'replies_count'));
+        $this->assertEquals([3,2,0], array_column($response['data'], 'replies_count'));
     }
 
     /** @test */
@@ -92,7 +92,7 @@ class ReadIssueTest extends TestCase
 
         $response = $this->getJson('/issues?unanswered=1')->json();
 
-        $this->assertCount(1, $response);
+        $this->assertCount(1, $response['data']);
     }
 
     /** @test */

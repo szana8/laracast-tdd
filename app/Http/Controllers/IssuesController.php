@@ -123,7 +123,6 @@ class IssuesController extends Controller
             $issues->where('category_id', $category->id);
         }
 
-        $issues = $issues->get();
-        return $issues;
+        return $issues->paginate(25);
     }
 }
