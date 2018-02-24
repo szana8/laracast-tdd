@@ -18,6 +18,7 @@ class CreateIssuesTable extends Migration
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('category_id');
             $table->unsignedInteger('replies_count')->default(0);
+            $table->unsignedInteger('visits')->default(0);
             $table->string('summary', 200);
             $table->longText('description');
             $table->timestamps();

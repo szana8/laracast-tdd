@@ -11,7 +11,8 @@ $factory->define(\App\Issue::class, function (Faker $faker) {
             return factory('App\Category')->create()->id;
         },
         'summary' => $faker->sentence,
-        'description' => $faker->paragraph
+        'description' => $faker->paragraph,
+        'visits' => 0
     ];
 });
 

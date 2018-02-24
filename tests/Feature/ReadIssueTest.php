@@ -105,4 +105,16 @@ class ReadIssueTest extends TestCase
 
         $this->assertCount(1, $response['data']);
     }
+
+    /** @test */
+    function we_record_a_new_visit_each_time_the_issue_is_read()
+    {
+        $issue = create('App\Issue');
+
+        $this->assertSame(0, $issue->visits);
+
+        $this->call('GET', $issue->path());
+
+        $this->assertEquals(1, $issue->fresh()->visits);
+    }
 }

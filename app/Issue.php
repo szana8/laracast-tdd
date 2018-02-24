@@ -173,12 +173,4 @@ class Issue extends Model
         return $this->updated_at > cache($user->visitedIssueCacheKey($this));
     }
 
-
-    /**
-     * @return mixed
-     */
-    public function visits()
-    {
-        return new Visits($this);
-    }
 }
