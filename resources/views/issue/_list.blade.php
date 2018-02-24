@@ -1,5 +1,5 @@
 @forelse($issues as $issue)
-    <div class="card card-default mt-4">
+    <div class="card card-default mb-4">
         <div class="card-header">
             <div class="level">
 
@@ -26,6 +26,10 @@
         <div class="card-body">
             <div class="body">{{ $issue->description }}</div>
             <hr>
+        </div>
+
+        <div class="card-footer">
+            {{ $issue->visits() }} visits
         </div>
     </div>
 @empty

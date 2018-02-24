@@ -5,6 +5,7 @@ namespace App;
 use App\Events\IssueHasNewReply;
 use App\Events\IssueReceivedNewReply;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Redis;
 
 /**
  * @property mixed category
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 class Issue extends Model
 {
 
-    use RecordsActivity;
+    use RecordsActivity, RecordsVisits;
 
     /**
      * Don't auto-apply mass assignment protection.

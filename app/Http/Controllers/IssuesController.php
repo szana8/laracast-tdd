@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
-use App\Filters\IssueFilters;
 use App\Issue;
+use App\Category;
+use App\Trending;
 use App\Rules\SpamFree;
-use App\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Filters\IssueFilters;
 
 class IssuesController extends Controller
 {
@@ -25,9 +24,10 @@ class IssuesController extends Controller
      *
      * @param Category $category
      * @param IssueFilters $filters
+     * @param Trending $trending
      * @return \Illuminate\Http\Response
      */
-    public function index(Category $category, IssueFilters $filters)
+    public function index(Category $category, IssueFilters $filters, Trending $trending)
     {
         $issues = $this->getIssues($category, $filters);
 
@@ -35,7 +35,10 @@ class IssuesController extends Controller
             return $issues;
         }
 
-        return view('issue.index', compact('issues'));
+        return view('issue.index', [
+            'issues' => $issues,
+            'trending' => $trending->get()
+        ]);
     }
 
     /**
@@ -77,14 +80,18 @@ class IssuesController extends Controller
      *
      * @param $category
      * @param  \App\Issue $issue
+     * @param Trending $trending
      * @return \Illuminate\Http\Response
-     * @throws \Exception
      */
-    public function show($category, Issue $issue)
+    public function show($category, Issue $issue, Trending $trending)
     {
         if (auth()->check()) {
             auth()->user()->read($issue);
         }
+
+        $trending->push($issue);
+
+        $issue->recordVisit();
 
         return view('issue.show',compact('issue'));
     }

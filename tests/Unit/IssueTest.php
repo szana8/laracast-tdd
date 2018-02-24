@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Notifications\IssueWasUpdated;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Redis;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -117,8 +118,22 @@ class IssueTest extends TestCase
 
             $this->assertFalse($issue->hasUpdateFor($user));
         });
+    }
 
+    /** @test */
+    function an_issue_records_each_visit()
+    {
+        $issue = make('App\Issue', ['id' => 1]);
 
+        $issue->resetVisits();
+
+        $issue->recordVisit();
+
+        $this->assertEquals(1, $issue->visits());
+
+        $issue->recordVisit();
+
+        $this->assertEquals(2, $issue->visits());
     }
 
 }
