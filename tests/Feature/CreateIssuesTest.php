@@ -20,6 +20,14 @@ class CreateIssuesTest extends TestCase
     }
 
     /** @test */
+    function authenticated_user_must_first_confirm_their_email_address_before_createing_issues()
+    {
+        $this->publishIssue()
+            ->assertRedirect('/issues')
+            ->assertSessionHas('flash', 'You must first confirm your email address');
+    }
+
+    /** @test */
     function an_authenticated_user_can_create_new_issue()
     {
         $this->signIn();
@@ -103,7 +111,7 @@ class CreateIssuesTest extends TestCase
      * @param $overrides
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    function publishIssue($overrides)
+    function publishIssue($overrides = [])
     {
         $this->signIn();
 
