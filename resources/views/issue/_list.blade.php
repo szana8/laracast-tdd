@@ -29,7 +29,7 @@
         </div>
 
         <div class="card-footer">
-            {{ $issue->visits() }} visits
+            {{ $issue->visits()->count() }} visits
         </div>
     </div>
 @empty

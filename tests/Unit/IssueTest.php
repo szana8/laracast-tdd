@@ -125,15 +125,17 @@ class IssueTest extends TestCase
     {
         $issue = make('App\Issue', ['id' => 1]);
 
-        $issue->resetVisits();
+        $issue->visits()->reset();
 
-        $issue->recordVisit();
+        $this->assertSame(0, $issue->visits()->count());
 
-        $this->assertEquals(1, $issue->visits());
+        $issue->visits()->record();
 
-        $issue->recordVisit();
+        $this->assertEquals(1, $issue->visits()->count());
 
-        $this->assertEquals(2, $issue->visits());
+        $issue->visits()->record();
+
+        $this->assertEquals(2, $issue->visits()->count());
     }
 
 }

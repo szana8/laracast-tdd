@@ -91,7 +91,7 @@ class IssuesController extends Controller
 
         $trending->push($issue);
 
-        $issue->recordVisit();
+        $issue->visits()->record();
 
         return view('issue.show',compact('issue'));
     }

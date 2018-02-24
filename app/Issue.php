@@ -5,7 +5,6 @@ namespace App;
 use App\Events\IssueHasNewReply;
 use App\Events\IssueReceivedNewReply;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Redis;
 
 /**
  * @property mixed category
@@ -14,7 +13,7 @@ use Illuminate\Support\Facades\Redis;
 class Issue extends Model
 {
 
-    use RecordsActivity, RecordsVisits;
+    use RecordsActivity;
 
     /**
      * Don't auto-apply mass assignment protection.
@@ -172,5 +171,14 @@ class Issue extends Model
     public function hasUpdateFor($user)
     {
         return $this->updated_at > cache($user->visitedIssueCacheKey($this));
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function visits()
+    {
+        return new Visits($this);
     }
 }
