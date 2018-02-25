@@ -20,7 +20,7 @@ class CreateIssuesTest extends TestCase
     }
 
     /** @test */
-    function authenticated_user_must_first_confirm_their_email_address_before_createing_issues()
+    function authenticated_user_must_first_confirm_their_email_address_before_creating_issues()
     {
         $this->publishIssue()
             ->assertRedirect('/issues')

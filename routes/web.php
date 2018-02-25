@@ -21,7 +21,7 @@ Route::get('/home', 'HomeController@index');
 
 Route::get('issues', 'IssuesController@index');
 Route::get('issues/create', 'IssuesController@create');
-Route::post('issues', 'IssuesController@store');
+Route::post('issues', 'IssuesController@store')->middleware('must-be-confirmed');
 Route::get('issues/{category}/{issue}', 'IssuesController@show');
 Route::delete('issues/{category}/{issue}', 'IssuesController@destroy');
 Route::get('issues/{category}', 'IssuesController@index');

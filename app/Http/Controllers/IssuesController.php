@@ -59,10 +59,6 @@ class IssuesController extends Controller
      */
     public function store(Request $request)
     {
-        if (! auth()->user()->confirmed) {
-            return redirect('/issues')->with('flash', 'You must first confirm your email address');
-        }
-
         $this->validate($request, [
             'summary' => ['required', new SpamFree()],
             'description' => ['required', new SpamFree()],
