@@ -8,6 +8,7 @@ use App\Trending;
 use App\Rules\SpamFree;
 use Illuminate\Http\Request;
 use App\Filters\IssueFilters;
+use Illuminate\Support\Facades\Redis;
 
 class IssuesController extends Controller
 {
@@ -60,7 +61,7 @@ class IssuesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'summary' => ['required', new SpamFree()],
+            'title' => ['required', new SpamFree()],
             'description' => ['required', new SpamFree()],
             'category_id' => 'required|exists:categories,id'
         ]);
@@ -68,9 +69,9 @@ class IssuesController extends Controller
         $issue = Issue::create([
             'user_id' => auth()->id(),
             'category_id' => request('category_id'),
-            'summary' => request('summary'),
+            'title' => request('title'),
             'description' => request('description'),
-            'slug' => request('summary')
+            'slug' => request('title')
         ]);
 
         return redirect($issue->path())->with('flash', 'Your issue published!');

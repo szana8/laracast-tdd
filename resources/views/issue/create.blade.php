@@ -22,9 +22,9 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="summary">Summary:</label>
-                                <input type="text" class="form-control" name="summary" id="summary"
-                                       placeholder="Summary" value="{{ old('summary') }}" required>
+                                <label for="title">Title:</label>
+                                <input type="text" class="form-control" name="title" id="title"
+                                       placeholder="Title" value="{{ old('title') }}" required>
                             </div>
 
                             <div class="form-group">

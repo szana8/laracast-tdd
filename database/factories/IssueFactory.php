@@ -3,7 +3,7 @@
 use Faker\Generator as Faker;
 
 $factory->define(\App\Issue::class, function (Faker $faker) {
-    $summary = $faker->sentence;
+    $title = $faker->sentence;
 
     return [
         'user_id' => function () {
@@ -12,10 +12,10 @@ $factory->define(\App\Issue::class, function (Faker $faker) {
         'category_id' => function () {
             return factory('App\Category')->create()->id;
         },
-        'summary' => $summary,
+        'title' => $title,
         'description' => $faker->paragraph,
         'visits' => 0,
-        'slug' => str_slug($summary)
+        'slug' => str_slug($title)
     ];
 });
 

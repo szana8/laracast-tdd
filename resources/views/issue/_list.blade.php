@@ -7,9 +7,9 @@
                     <h4 class="flex">
                         <a href="{{ $issue->path() }}">
                             @if (auth()->check() && $issue->hasUpdateFor(auth()->user()))
-                                <strong>{{ $issue->summary }}</strong>
+                                <strong>{{ $issue->title }}</strong>
                             @else
-                                {{ $issue->summary }}
+                                {{ $issue->title }}
                             @endif
                         </a>
                     </h4>

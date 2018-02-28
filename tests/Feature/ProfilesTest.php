@@ -28,7 +28,7 @@ class ProfilesTest extends TestCase
         $issue = create('App\Issue', ['user_id' => auth()->id()]);
 
         $this->get("/profiles/". auth()->user()->name)
-            ->assertSee($issue->summary)
+            ->assertSee($issue->title)
             ->assertSee($issue->description);
     }
 }

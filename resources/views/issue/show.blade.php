@@ -17,7 +17,7 @@
                                <a href="/profiles/{{ $issue->creator->name }}">
                                {{ $issue->creator->name }}
                                 </a> posted
-                               {{ $issue->summary }}
+                               {{ $issue->title }}
                             </span>
 
                                 @can('update', $issue)

@@ -44,15 +44,15 @@ class CreateIssuesTest extends TestCase
         $response = $this->post(route('issues'), $issue->toArray());
 
         $this->get($response->headers->get('Location'))
-            ->assertSee($issue->summary)
+            ->assertSee($issue->title)
             ->assertSee($issue->description);
     }
 
     /** @test */
     function an_issue_requires_summary()
     {
-        $this->publishIssue(['summary' => null])
-            ->assertSessionHasErrors('summary');
+        $this->publishIssue(['title' => null])
+            ->assertSessionHasErrors('title');
     }
 
     /** @test */
@@ -79,17 +79,17 @@ class CreateIssuesTest extends TestCase
     {
         $this->signIn();
 
-        $issue = create('App\Issue', ['summary' => 'Foo Summary', 'slug' => 'foo-summary']);
+        $issue = create('App\Issue', ['title' => 'Foo Title', 'slug' => 'foo-title']);
 
-        $this->assertEquals($issue->fresh()->slug, 'foo-summary');
-
-        $this->post(route('issues'), $issue->toArray());
-
-        $this->assertTrue(Issue::whereSlug('foo-summary-2')->exists());
+        $this->assertEquals($issue->fresh()->slug, 'foo-title');
 
         $this->post(route('issues'), $issue->toArray());
 
-        $this->assertTrue(Issue::whereSlug('foo-summary-3')->exists());
+        $this->assertTrue(Issue::whereSlug('foo-title-2')->exists());
+
+        $this->post(route('issues'), $issue->toArray());
+
+        $this->assertTrue(Issue::whereSlug('foo-title-3')->exists());
     }
 
     /** @test */

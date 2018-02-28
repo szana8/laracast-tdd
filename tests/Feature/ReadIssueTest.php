@@ -33,14 +33,14 @@ class ReadIssueTest extends TestCase
     function a_user_can_browse_issues()
     {
         $this->get('/issues')
-            ->assertSee($this->issue->summary);
+            ->assertSee($this->issue->title);
     }
 
     /** @test */
     function a_user_can_read_a_single_issue()
     {
         $this->get($this->issue->path())
-            ->assertSee($this->issue->summary);
+            ->assertSee($this->issue->title);
     }
 
     /** @test */
@@ -51,8 +51,8 @@ class ReadIssueTest extends TestCase
         $issueNotInCategory = create('App\Issue');
 
         $this->get('/issues/' . $category->slug)
-            ->assertSee($issueInCategory->summary)
-            ->assertDontSee($issueNotInCategory->summary);
+            ->assertSee($issueInCategory->title)
+            ->assertDontSee($issueNotInCategory->title);
     }
 
     /** @test */
@@ -64,8 +64,8 @@ class ReadIssueTest extends TestCase
         $issueNotByJohn = create('App\Issue');
 
         $this->get('/issues?by=JohnDoe')
-            ->assertSee($issueByJohn->summary)
-            ->assertDontSee($issueNotByJohn->summary);
+            ->assertSee($issueByJohn->title)
+            ->assertDontSee($issueNotByJohn->title);
     }
 
     /** @test */

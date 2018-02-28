@@ -40,6 +40,6 @@ class TrendingIssuesTest extends TestCase
 
         $this->assertCount(1, $trending = $this->trending->get());
 
-        $this->assertEquals($issue->summary, $trending[0]->summary);
+        $this->assertEquals($issue->title, $trending[0]->title);
     }
 }

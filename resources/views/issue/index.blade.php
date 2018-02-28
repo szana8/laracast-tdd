@@ -19,7 +19,7 @@
                             <ul class="list-group">
                                 @foreach($trending as $issue)
                                     <li class="list-group-item">
-                                        <a href="{{ url($issue->path) }}">{{ $issue->summary }}</a>
+                                        <a href="{{ url($issue->path) }}">{{ $issue->title }}</a>
                                     </li>
                                 @endforeach
                             </ul>

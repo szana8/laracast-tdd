@@ -20,7 +20,7 @@ class Trending
     public function push($issue)
     {
         Redis::zincrby($this->cacheKey(), 1, json_encode([
-            'summary' => $issue->summary,
+            'title' => $issue->title,
             'path' => $issue->path()
         ]));
     }

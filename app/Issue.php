@@ -199,7 +199,7 @@ class Issue extends Model
      */
     public function incrementSlug($slug)
     {
-        $max = static::whereSummary($this->summary)->latest('id')->value('slug');
+        $max = static::whereTitle($this->title)->latest('id')->value('slug');
 
         if (is_numeric($max[-1])) {
             return preg_replace_callback('/(\d+)$/', function ($matches) {
