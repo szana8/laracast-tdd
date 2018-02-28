@@ -22,6 +22,7 @@ class CreateIssuesTable extends Migration
             $table->unsignedInteger('visits')->default(0);
             $table->string('title', 200);
             $table->longText('description');
+            $table->unsignedInteger('best_reply_id')->nullable();
             $table->timestamps();
         });
     }

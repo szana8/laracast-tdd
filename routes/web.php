@@ -33,6 +33,8 @@ Route::delete('replies/{reply}', 'RepliesController@destroy');
 Route::post('replies/{reply}/favorites', 'FavoritesController@store');
 Route::delete('replies/{reply}/favorites', 'FavoritesController@destroy');
 
+Route::post('/replies/{reply}/best', 'BestRepliesController@store')->name('best-replies.store');
+
 Route::post('issues/{category}/{issue}/subscriptions', 'IssueSubscribeController@store')->middleware('auth');
 Route::delete('issues/{category}/{issue}/subscriptions', 'IssueSubscribeController@destroy')->middleware('auth');
 

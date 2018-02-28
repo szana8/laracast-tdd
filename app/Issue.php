@@ -205,4 +205,12 @@ class Issue extends Model
         $this->attributes['slug'] = $slug;
     }
 
+    /**
+     * @param $reply
+     * @return bool
+     */
+    public function markBestReply(Reply $reply)
+    {
+        $this->update(['best_reply_id' => $reply->id]);
+    }
 }
