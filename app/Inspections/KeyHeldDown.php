@@ -7,6 +7,8 @@ use Exception;
 class KeyHeldDown
 {
     /**
+     * Detect spam.
+     *
      * @param $body
      * @throws \Exception
      */

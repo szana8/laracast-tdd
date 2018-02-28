@@ -44,7 +44,6 @@ class Reply extends Model
         });
     }
 
-
     /**
      * A reply has an owner.
      *
@@ -66,6 +65,8 @@ class Reply extends Model
     }
 
     /**
+     * Determine if the reply was just published a moment ago.
+     *
      * @return mixed
      */
     public function wasJustPublished()
@@ -74,6 +75,8 @@ class Reply extends Model
     }
 
     /**
+     * Fetch all mentioned users within the reply's body.
+     *
      * @return mixed
      */
     public function mentionedUsers()

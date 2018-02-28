@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Favorite;
 use App\Reply;
 
 class FavoritesController extends Controller
 {
     /**
-     * FavoritesController constructor.
+     * Create a new controller instance.
      */
     public function __construct()
     {
@@ -19,15 +18,17 @@ class FavoritesController extends Controller
      * Store a new favorite in the database.
      *
      * @param Reply $reply
-     * @return mixed
      */
     public function store(Reply $reply)
     {
         $reply->favorite();
-
-        return back();
     }
 
+    /**
+     * Delete the favorite.
+     *
+     * @param Reply $reply
+     */
     public function destroy(Reply $reply)
     {
         $reply->unFavorite();

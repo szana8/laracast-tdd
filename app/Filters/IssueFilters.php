@@ -8,6 +8,8 @@ use App\User;
 class IssueFilters extends Filters
 {
     /**
+     * Registered filters to operate upon.
+     *
      * @var array
      */
     protected $filters = ['by', 'popular', 'unanswered'];

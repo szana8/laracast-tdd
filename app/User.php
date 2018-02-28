@@ -27,6 +27,11 @@ class User extends Authenticatable
         'password', 'remember_token', 'email',
     ];
 
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
     protected $casts = [
         'confirmed' => 'boolean'
     ];
@@ -52,6 +57,8 @@ class User extends Authenticatable
     }
 
     /**
+     * Fetch the last published reply for the user.
+     *
      * @return \Illuminate\Database\Query\Builder|static
      */
     public function lastReply()
@@ -60,6 +67,8 @@ class User extends Authenticatable
     }
 
     /**
+     * Get all activity for the user.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function activity()
@@ -68,7 +77,9 @@ class User extends Authenticatable
     }
 
     /**
-     * @param $issue
+     * Get the cache key for when a user reads a issue.
+     *
+     * @param Issue $issue
      * @return string
      */
     public function visitedIssueCacheKey($issue)
@@ -77,7 +88,9 @@ class User extends Authenticatable
     }
 
     /**
-     * @param $issue
+     * Record that the user has read the given issue.
+     *
+     * @param Issue $issue
      * @throws \Exception
      */
     public function read($issue)
@@ -89,6 +102,8 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the path to the user's avatar.
+     *
      * @param $avatar
      * @return string
      */
@@ -97,10 +112,12 @@ class User extends Authenticatable
         return asset($avatar ? 'storage/' . $avatar : 'images/avatars/default.png');
     }
 
+    /**
+     * Mark the user's account as confirmed.
+     */
     public function confirm()
     {
         $this->confirmed = true;
-
         $this->confirmation_token = null;
 
         $this->save();

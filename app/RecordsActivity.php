@@ -34,6 +34,8 @@ trait RecordsActivity
     }
 
     /**
+     * Record new activity for the model.
+     *
      * @param $event
      * @throws \ReflectionException
      */
@@ -46,6 +48,8 @@ trait RecordsActivity
     }
 
     /**
+     * Fetch the activity relationship.
+     *
      * @return mixed
      */
     public function activity()
@@ -54,6 +58,8 @@ trait RecordsActivity
     }
 
     /**
+     * Determine the activity type.
+     *
      * @param $event
      * @return string
      * @throws \ReflectionException

@@ -46,6 +46,10 @@ class Issue extends Model
         static::deleting(function ($issue) {
             $issue->replies->each->delete();
         });
+
+        static::created(function ($issue) {
+            $issue->update(['slug' => $issue->title]);
+        });
     }
 
     /**
@@ -160,11 +164,15 @@ class Issue extends Model
      */
     public function getIsSubscribedToAttribute()
     {
-        return $this->subscriptions()->where('user_id', auth()->id())->exists();
+        return $this->subscriptions()
+            ->where('user_id', auth()->id())
+            ->exists();
     }
 
     /**
-     * @param $user
+     * Determine if the issue has been updated since the user last read it.
+     *
+     * @param User $user
      * @return bool
      * @throws \Exception
      */
@@ -174,6 +182,8 @@ class Issue extends Model
     }
 
     /**
+     * Get the route key name.
+     *
      * @return string
      */
     public function getRouteKeyName()
@@ -182,32 +192,17 @@ class Issue extends Model
     }
 
     /**
+     * Set the proper slug attribute.
+     *
      * @param $value
      */
     public function setSlugAttribute($value)
     {
         if (static::whereSlug($slug = str_slug($value))->exists()) {
-            $slug = $this->incrementSlug($slug);
+            $slug = "{$slug}-" . $this->id;
         }
 
         $this->attributes['slug'] = $slug;
-    }
-
-    /**
-     * @param $slug
-     * @return null|string|string[]
-     */
-    public function incrementSlug($slug)
-    {
-        $max = static::whereTitle($this->title)->latest('id')->value('slug');
-
-        if (is_numeric($max[-1])) {
-            return preg_replace_callback('/(\d+)$/', function ($matches) {
-                return $matches[1] + 1;
-            }, $max);
-        }
-
-        return "{$slug}-2";
     }
 
 }

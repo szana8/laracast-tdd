@@ -7,6 +7,8 @@ use Exception;
 class InvalidKeywords
 {
     /**
+     * All registered invalid keywords.
+     *
      * @var array
      */
     protected $keywords = [
@@ -14,6 +16,8 @@ class InvalidKeywords
     ];
 
     /**
+     * Detect spam.
+     *
      * @param $body
      * @throws Exception
      */

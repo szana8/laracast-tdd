@@ -8,12 +8,11 @@ use App\Trending;
 use App\Rules\SpamFree;
 use Illuminate\Http\Request;
 use App\Filters\IssueFilters;
-use Illuminate\Support\Facades\Redis;
 
 class IssuesController extends Controller
 {
     /**
-     * Create new IssueController instance.
+     * Create new controller instance.
      */
     public function __construct()
     {
@@ -70,9 +69,12 @@ class IssuesController extends Controller
             'user_id' => auth()->id(),
             'category_id' => request('category_id'),
             'title' => request('title'),
-            'description' => request('description'),
-            'slug' => request('title')
+            'description' => request('description')
         ]);
+
+        if ($request->wantsJson()) {
+            return response($issue, 201);
+        }
 
         return redirect($issue->path())->with('flash', 'Your issue published!');
     }
@@ -102,8 +104,8 @@ class IssuesController extends Controller
      * Remove the specified resource from storage.
      *
      * @param $category
-     * @param  \App\Issue $issue
-     * @return void
+     * @param  Issue $issue
+     * @return mixed
      * @throws \Exception
      */
     public function destroy($category, Issue $issue)
@@ -120,6 +122,8 @@ class IssuesController extends Controller
     }
 
     /**
+     * Fetch all relevant issues.
+     *
      * @param Category $category
      * @param IssueFilters $filters
      * @return mixed

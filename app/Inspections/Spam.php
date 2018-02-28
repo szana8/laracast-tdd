@@ -2,15 +2,21 @@
 
 namespace App\Inspections;
 
-
 class Spam
 {
+    /**
+     * All registered inspections.
+     *
+     * @var array
+     */
     protected $inspections = [
         InvalidKeywords::class,
         KeyHeldDown::class
     ];
 
     /**
+     * Detect spam.
+     *
      * @param $body
      * @return bool
      * @throws \Exception
@@ -23,5 +29,4 @@ class Spam
 
         return false;
     }
-
 }

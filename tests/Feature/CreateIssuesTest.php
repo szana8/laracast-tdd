@@ -79,17 +79,25 @@ class CreateIssuesTest extends TestCase
     {
         $this->signIn();
 
-        $issue = create('App\Issue', ['title' => 'Foo Title', 'slug' => 'foo-title']);
+        $issue = create('App\Issue', ['title' => 'Foo Title']);
 
         $this->assertEquals($issue->fresh()->slug, 'foo-title');
 
-        $this->post(route('issues'), $issue->toArray());
+        $issue = $this->postJson(route('issues'), $issue->toArray())->json();
 
-        $this->assertTrue(Issue::whereSlug('foo-title-2')->exists());
+        $this->assertEquals("foo-title-{$issue['id']}", $issue['slug']);
+    }
 
-        $this->post(route('issues'), $issue->toArray());
+    /** @test */
+    function an_issue_with_a_title_that_ends_in_a_number_should_generates_a_proper_slug()
+    {
+        $this->signIn();
 
-        $this->assertTrue(Issue::whereSlug('foo-title-3')->exists());
+        $issue = create('App\Issue', ['title' => 'Some Title 24']);
+
+        $issue = $this->postJson(route('issues'), $issue->toArray())->json();
+
+        $this->assertEquals("some-title-24-{$issue['id']}", $issue['slug']);
     }
 
     /** @test */

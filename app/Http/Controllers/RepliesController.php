@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreatePostRequest;
 use App\Issue;
 use App\Reply;
+use App\Http\Requests\CreatePostRequest;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class RepliesController extends Controller
 {
     /**
-     * RepliesController constructor.
+     * Create a new controller instance.
      */
     public function __construct()
     {
@@ -17,9 +18,11 @@ class RepliesController extends Controller
     }
 
     /**
+     * Fetch all relevant replies.
+     *
      * @param $chanelId
      * @param Issue $issue
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @return LengthAwarePaginator
      */
     public function index($chanelId, Issue $issue)
     {
@@ -43,6 +46,8 @@ class RepliesController extends Controller
     }
 
     /**
+     * Update an existing reply.
+     *
      * @param Reply $reply
      * @return void
      * @throws \Illuminate\Auth\Access\AuthorizationException

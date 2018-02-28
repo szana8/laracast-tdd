@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Redis;
 class Trending
 {
     /**
+     * Fetch all trending issues.
+     *
      * @return array
      */
     public function get()
@@ -15,6 +17,8 @@ class Trending
     }
 
     /**
+     * Push a new issue to the trending list.
+     *
      * @param $issue
      */
     public function push($issue)
@@ -26,6 +30,8 @@ class Trending
     }
 
     /**
+     * Get the cache key name.
+     *
      * @return string
      */
     public function cacheKey()
@@ -34,7 +40,7 @@ class Trending
     }
 
     /**
-     *
+     * Reset all trending issues.
      */
     public function reset()
     {

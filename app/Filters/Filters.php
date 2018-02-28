@@ -13,17 +13,22 @@ abstract class Filters
     protected $request;
 
     /**
+     * The Eloquent builder.
+     *
      * @var
      */
     protected $builder;
 
     /**
+     * Registered filters to operate upon.
+     *
      * @var array
      */
     protected $filters = ['by'];
 
     /**
      * IssueFilters constructor.
+     *
      * @param Request $request
      */
     public function __construct(Request $request)
@@ -32,6 +37,8 @@ abstract class Filters
     }
 
     /**
+     * Apply the filters.
+     *
      * @param $builder
      * @return mixed
      */
@@ -51,6 +58,8 @@ abstract class Filters
     }
 
     /**
+     * Fetch all relevant filters from the request.
+     *
      * @return array
      */
     public function getFilters()

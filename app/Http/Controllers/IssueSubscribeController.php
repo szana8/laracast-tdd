@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Issue;
-use Illuminate\Http\Request;
 
 class IssueSubscribeController extends Controller
 {
     /**
+     * Store a new issue subscription.
+     *
      * @param $categoryId
      * @param Issue $issue
      */
@@ -17,6 +18,8 @@ class IssueSubscribeController extends Controller
     }
 
     /**
+     * Delete an existing issue subscription.
+     *
      * @param $categoryId
      * @param Issue $issue
      */
