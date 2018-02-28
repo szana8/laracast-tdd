@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Issue;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -13,28 +14,34 @@ class CreateIssuesTest extends TestCase
     function a_guest_may_not_create_issues()
     {
         $this->get('/issues/create')
-            ->assertRedirect('login');
+            ->assertRedirect(route('login'));
 
-        $this->post('/issues')
-            ->assertRedirect('login');
+        $this->post(route('issues'))
+            ->assertRedirect(route('login'));
     }
 
     /** @test */
-    function authenticated_user_must_first_confirm_their_email_address_before_creating_issues()
+    function new_user_must_first_confirm_their_email_address_before_creating_issues()
     {
-        $this->publishIssue()
-            ->assertRedirect('/issues')
+        $user = factory('App\User')->states('uncomfirmed')->create();
+
+        $this->signIn($user);
+
+        $issue = make('App\Issue');
+
+        $this->post(route('issues'), $issue->toArray())
+            ->assertRedirect(route('issues'))
             ->assertSessionHas('flash', 'You must first confirm your email address');
     }
 
     /** @test */
-    function an_authenticated_user_can_create_new_issue()
+    function a_user_can_create_new_issue()
     {
         $this->signIn();
 
         $issue = make('App\Issue');
 
-        $response = $this->post('/issues', $issue->toArray());
+        $response = $this->post(route('issues'), $issue->toArray());
 
         $this->get($response->headers->get('Location'))
             ->assertSee($issue->summary)
@@ -65,6 +72,24 @@ class CreateIssuesTest extends TestCase
 
         $this->publishIssue(['category_id' => 999])
             ->assertSessionHasErrors('category_id');
+    }
+
+    /** @test */
+    function an_issue_requires_a_unique_slug()
+    {
+        $this->signIn();
+
+        $issue = create('App\Issue', ['summary' => 'Foo Summary', 'slug' => 'foo-summary']);
+
+        $this->assertEquals($issue->fresh()->slug, 'foo-summary');
+
+        $this->post(route('issues'), $issue->toArray());
+
+        $this->assertTrue(Issue::whereSlug('foo-summary-2')->exists());
+
+        $this->post(route('issues'), $issue->toArray());
+
+        $this->assertTrue(Issue::whereSlug('foo-summary-3')->exists());
     }
 
     /** @test */
@@ -99,7 +124,7 @@ class CreateIssuesTest extends TestCase
         $issue = create('App\Issue');
 
         $this->delete($issue->path())
-            ->assertRedirect('login');
+            ->assertRedirect(route('login'));
 
         $this->signIn();
 
@@ -117,6 +142,6 @@ class CreateIssuesTest extends TestCase
 
         $issue = make('App\Issue', $overrides);
 
-        return $this->post('/issues', $issue->toArray());
+        return $this->post(route('issues'), $issue->toArray());
     }
 }

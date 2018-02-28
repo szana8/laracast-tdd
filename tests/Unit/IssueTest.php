@@ -22,7 +22,15 @@ class IssueTest extends TestCase
 
         $this->issue = factory('App\Issue')->create();
     }
+    
+    /** @test */
+    function an_issue_has_a_path()
+    {
+        $issue = create('App\Issue');
 
+        $this->assertEquals("/issues/{$issue->category->slug}/{$issue->slug}", $issue->path());
+    }
+    
     /** @test */
     function an_issue_has_a_creator()
     {

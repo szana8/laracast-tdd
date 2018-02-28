@@ -69,7 +69,8 @@ class IssuesController extends Controller
             'user_id' => auth()->id(),
             'category_id' => request('category_id'),
             'summary' => request('summary'),
-            'description' => request('description')
+            'description' => request('description'),
+            'slug' => request('summary')
         ]);
 
         return redirect($issue->path())->with('flash', 'Your issue published!');

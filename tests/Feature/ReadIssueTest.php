@@ -26,7 +26,7 @@ class ReadIssueTest extends TestCase
     {
         $issue = create('App\Issue');
 
-        $this->assertEquals('/issues/' . $issue->category->slug . '/' . $issue->id, $issue->path());
+        $this->assertEquals('/issues/' . $issue->category->slug . '/' . $issue->slug, $issue->path());
     }
 
     /** @test */

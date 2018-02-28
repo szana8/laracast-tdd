@@ -19,7 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 
-Route::get('issues', 'IssuesController@index');
+Route::get('issues', 'IssuesController@index')->name('issues');
 Route::get('issues/create', 'IssuesController@create');
 Route::post('issues', 'IssuesController@store')->middleware('must-be-confirmed');
 Route::get('issues/{category}/{issue}', 'IssuesController@show');
@@ -40,7 +40,7 @@ Route::get('profiles/{user}', 'ProfilesController@show')->name('profile');
 Route::get('profiles/{user}/notifications', 'UserNotificationsController@index');
 Route::delete('profiles/{user}/notifications/{notification}', 'UserNotificationsController@destroy');
 
-Route::get('/register/confirm', 'Api\RegisterConfirmationController@index');
+Route::get('/register/confirm', 'Api\RegisterConfirmationController@index')->name('register.confirm');
 
 Route::get('/api/users', 'Api\UsersController@index');
 Route::post('/api/users/{user}/avatar', 'Api\UserAvatarController@store')->middleware('auth')->name('avatar');

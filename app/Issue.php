@@ -55,7 +55,7 @@ class Issue extends Model
      */
     public function path()
     {
-        return '/issues/' . $this->category->slug . '/' . $this->id;
+        return '/issues/' . $this->category->slug . '/' . $this->slug;
     }
 
     /**
@@ -171,6 +171,43 @@ class Issue extends Model
     public function hasUpdateFor($user)
     {
         return $this->updated_at > cache($user->visitedIssueCacheKey($this));
+    }
+
+    /**
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    /**
+     * @param $value
+     */
+    public function setSlugAttribute($value)
+    {
+        if (static::whereSlug($slug = str_slug($value))->exists()) {
+            $slug = $this->incrementSlug($slug);
+        }
+
+        $this->attributes['slug'] = $slug;
+    }
+
+    /**
+     * @param $slug
+     * @return null|string|string[]
+     */
+    public function incrementSlug($slug)
+    {
+        $max = static::whereSummary($this->summary)->latest('id')->value('slug');
+
+        if (is_numeric($max[-1])) {
+            return preg_replace_callback('/(\d+)$/', function ($matches) {
+                return $matches[1] + 1;
+            }, $max);
+        }
+
+        return "{$slug}-2";
     }
 
 }
