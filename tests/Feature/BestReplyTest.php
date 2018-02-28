@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class BestReplyTest extends TestCase
@@ -40,5 +41,21 @@ class BestReplyTest extends TestCase
             ->assertStatus(403);
 
         $this->assertFalse($replies[1]->fresh()->isBest());
+    }
+
+    /** @test */
+    function if_a_best_reply_is_deleted_then_the_issue_is_properly_updated_to_reflect_that()
+    {
+//        DB::statement('PRAGMA foreign_keys=on;');
+
+        $this->signIn();
+
+        $reply = create('App\Reply', ['user_id' => auth()->id()]);
+
+        $reply->issue->markBestReply($reply);
+
+        $this->deleteJson(route('replies.destroy', $reply));
+
+        $this->assertNotNull($reply->issue->fresh()->best_reply_id);
     }
 }

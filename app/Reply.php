@@ -26,7 +26,7 @@ class Reply extends Model
     /**
      * @var array
      */
-    protected $appends = ['favoritesCount', 'isFavorited'];
+    protected $appends = ['favoritesCount', 'isFavorited', 'isBest'];
 
     /**
      * Boot the model.
@@ -112,5 +112,13 @@ class Reply extends Model
     public function isBest()
     {
         return $this->issue->best_reply_id == $this->id;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsBestAttribute()
+    {
+        return $this->isBest();
     }
 }
