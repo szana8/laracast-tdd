@@ -23,6 +23,11 @@ Route::get('issues', 'IssuesController@index')->name('issues');
 Route::get('issues/create', 'IssuesController@create');
 Route::post('issues', 'IssuesController@store')->middleware('must-be-confirmed');
 Route::get('issues/{category}/{issue}', 'IssuesController@show');
+
+//Route::patch('issues/{category}/{issue}', 'IssuesController@update')->name('issues.update');
+Route::post('locked-issues/{issue}', 'LockedIssuesController@store')->name('locked-issues.store')->middleware(['auth', 'admin']);
+Route::delete('locked-issues/{issue}', 'LockedIssuesController@destroy')->name('locked-issues.destroy')->middleware(['auth', 'admin']);
+
 Route::delete('issues/{category}/{issue}', 'IssuesController@destroy');
 Route::get('issues/{category}', 'IssuesController@index');
 

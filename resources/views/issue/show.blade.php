@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <issue-view :initial-replies-count="{{ $issue->replies_count }}" inline-template>
+    <issue-view :issue="{{ $issue }}" inline-template>
         <div class="container">
             <div class="row">
                 <div class="col-md-8">
@@ -49,7 +49,13 @@
                             </p>
 
                             <p>
-                                <subscribe-button :active="{{ json_encode($issue->isSubscribedTo) }}"></subscribe-button>
+                                <subscribe-button :active="{{ json_encode($issue->isSubscribedTo) }}" v-if="signedIn"></subscribe-button>
+
+                                <button class="btn btn-default"
+                                        v-show="authorize('isAdmin')"
+                                        @click="toggleLock"
+                                        v-text="locked ? 'Unlock' : 'Lock'">
+                                </button>
                             </p>
                         </div>
                     </div>

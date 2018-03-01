@@ -34,11 +34,15 @@ class RepliesController extends Controller
      *
      * @param $categoryId
      * @param Issue $issue
-     * @param CreatePostRequest $form
+     * @param CreatePostRequest $request
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function store($categoryId, Issue $issue, CreatePostRequest $form)
+    public function store($categoryId, Issue $issue, CreatePostRequest $request)
     {
+        if ($issue->locked) {
+            return response('Issue is locked.', 422);
+        }
+
         return $issue->addReply([
             'body' => request('body'),
             'user_id' => auth()->id()

@@ -5,17 +5,26 @@
     export default {
         name: "issue",
 
-        props: ['initialRepliesCount'],
-
-        data() {
-            return {
-                repliesCount: this.initialRepliesCount
-            }
-        },
+        props: ['issue'],
 
         components: {
             Replies,
             SubscribeButton
+        },
+
+        data() {
+            return {
+                repliesCount: this.issue.replies_count,
+                locked: this.issue.locked
+            }
+        },
+
+        methods: {
+            toggleLock() {
+                axios[this.locked ? 'delete' : 'post']('/locked-issues/' + this.issue.slug);
+
+                this.locked = ! this.locked;
+            }
         }
     }
 </script>

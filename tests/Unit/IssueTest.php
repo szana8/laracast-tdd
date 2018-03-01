@@ -14,8 +14,14 @@ class IssueTest extends TestCase
 {
     use DatabaseMigrations;
 
+    /**
+     * @var
+     */
     protected $issue;
 
+    /**
+     *
+     */
     public function setUp()
     {
         parent::setUp();
@@ -127,23 +133,5 @@ class IssueTest extends TestCase
             $this->assertFalse($issue->hasUpdateFor($user));
         });
     }
-
-//    /** @test */
-//    function an_issue_records_each_visit()
-//    {
-//        $issue = make('App\Issue', ['id' => 1]);
-//
-//        $issue->visits()->reset();
-//
-//        $this->assertSame(0, $issue->visits()->count());
-//
-//        $issue->visits()->record();
-//
-//        $this->assertEquals(1, $issue->visits()->count());
-//
-//        $issue->visits()->record();
-//
-//        $this->assertEquals(2, $issue->visits()->count());
-//    }
 
 }

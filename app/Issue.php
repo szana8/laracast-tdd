@@ -37,6 +37,13 @@ class Issue extends Model
     protected $appends = ['isSubscribedTo'];
 
     /**
+     * @var array
+     */
+    protected $casts = [
+        'locked' => 'boolean'
+    ];
+
+    /**
      * Boot the model.
      */
     protected static function boot()
@@ -206,11 +213,12 @@ class Issue extends Model
     }
 
     /**
-     * @param $reply
+     * @param Reply $reply
      * @return bool
      */
     public function markBestReply(Reply $reply)
     {
-        $this->update(['best_reply_id' => $reply->id]);
+        return $this->update(['best_reply_id' => $reply->id]);
     }
+
 }
