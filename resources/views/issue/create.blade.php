@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('header')
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+@endsection
+
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
@@ -31,6 +35,10 @@
                                 <label for="description">Description:</label>
                                 <textarea class="form-control" name="description" id="description"
                                           placeholder="Description" rows="8" required>{{ old('description') }}</textarea>
+                            </div>
+
+                            <div class="mb-4">
+                                <div class="g-recaptcha" data-sitekey="6LcTBUoUAAAAAHgWb3ii3Vus3uSx-ZAhBSL_mGIT"></div>
                             </div>
 
                             <div class="form-group">

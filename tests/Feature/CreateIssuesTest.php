@@ -2,13 +2,26 @@
 
 namespace Tests\Feature;
 
-use App\Issue;
+
+use App\Rules\Recaptcha;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class CreateIssuesTest extends TestCase
 {
     use DatabaseMigrations;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        app()->singleton(Recaptcha::class, function () {
+            return \Mockery::mock(Recaptcha::class, function($m) {
+                $m->shouldReceive('passes')->andReturn(true);
+            });
+        });
+    }
+
 
     /** @test */
     function a_guest_may_not_create_issues()
@@ -39,13 +52,11 @@ class CreateIssuesTest extends TestCase
     {
         $this->signIn();
 
-        $issue = make('App\Issue');
-
-        $response = $this->post(route('issues'), $issue->toArray());
+        $response = $this->publishIssue(['title' => 'Some title', 'description' => 'Foobar']);
 
         $this->get($response->headers->get('Location'))
-            ->assertSee($issue->title)
-            ->assertSee($issue->description);
+            ->assertSee('Some title')
+            ->assertSee('Foobar');
     }
 
     /** @test */
@@ -83,7 +94,7 @@ class CreateIssuesTest extends TestCase
 
         $this->assertEquals($issue->fresh()->slug, 'foo-title');
 
-        $issue = $this->postJson(route('issues'), $issue->toArray())->json();
+        $issue = $this->postJson(route('issues'), $issue->toArray() + ['g-recaptcha-response' => 'token'])->json();
 
         $this->assertEquals("foo-title-{$issue['id']}", $issue['slug']);
     }
@@ -95,7 +106,7 @@ class CreateIssuesTest extends TestCase
 
         $issue = create('App\Issue', ['title' => 'Some Title 24']);
 
-        $issue = $this->postJson(route('issues'), $issue->toArray())->json();
+        $issue = $this->postJson(route('issues'), $issue->toArray() + ['g-recaptcha-response' => 'token'])->json();
 
         $this->assertEquals("some-title-24-{$issue['id']}", $issue['slug']);
     }
@@ -150,6 +161,15 @@ class CreateIssuesTest extends TestCase
 
         $issue = make('App\Issue', $overrides);
 
-        return $this->post(route('issues'), $issue->toArray());
+        return $this->post(route('issues'), $issue->toArray() + ['g-recaptcha-response' => 'token']);
+    }
+
+    /** @test */
+    function an_issue_requires_recaptcha_verification()
+    {
+        unset(app()[Recaptcha::class]);
+
+        $this->publishIssue(['g-recaptcha-response' => 'test'])
+            ->assertSessionHasErrors('g-recaptcha-response');
     }
 }

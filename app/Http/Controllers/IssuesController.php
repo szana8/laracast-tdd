@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Rules\Recaptcha;
 use App\Issue;
 use App\Category;
 use App\Trending;
@@ -54,15 +55,17 @@ class IssuesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
+     * @param Recaptcha $recaptcha
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Recaptcha $recaptcha)
     {
         $this->validate($request, [
             'title' => ['required', new SpamFree()],
             'description' => ['required', new SpamFree()],
-            'category_id' => 'required|exists:categories,id'
+            'category_id' => 'required|exists:categories,id',
+            'g-recaptcha-response' => ['required', $recaptcha]
         ]);
 
         $issue = Issue::create([
