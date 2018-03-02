@@ -17,7 +17,7 @@ class IssuesController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['web','auth'])->except(['index', 'show']);
+        $this->middleware(['web', 'auth'])->except(['index', 'show']);
     }
 
     /**
@@ -61,7 +61,7 @@ class IssuesController extends Controller
      */
     public function store(Request $request, Recaptcha $recaptcha)
     {
-        $this->validate($request, [
+        $request->validate([
             'title' => ['required', new SpamFree()],
             'description' => ['required', new SpamFree()],
             'category_id' => 'required|exists:categories,id',
@@ -100,7 +100,29 @@ class IssuesController extends Controller
 
         $issue->increment('visits');
 
-        return view('issue.show',compact('issue'));
+        return view('issue.show', compact('issue'));
+    }
+
+    /**
+     * @param $categoryId
+     * @param Issue $issue
+     * @return Issue|bool
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function update($categoryId, Issue $issue)
+    {
+        $this->authorize('update', $issue);
+
+        $issue = $issue->update(request()->validate([
+            'title' => ['required', new SpamFree()],
+            'description' => ['required', new SpamFree()]
+        ]));
+
+        if(\request()->wantsJson()) {
+            return response('', 201);
+        }
+
+        return $issue;
     }
 
     /**

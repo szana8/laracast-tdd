@@ -87424,7 +87424,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             repliesCount: this.issue.replies_count,
-            locked: this.issue.locked
+            locked: this.issue.locked,
+            editing: false,
+            form: {
+                title: this.issue.title,
+                description: this.issue.description
+            }
         };
     },
 
@@ -87434,6 +87439,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios[this.locked ? 'delete' : 'post']('/locked-issues/' + this.issue.slug);
 
             this.locked = !this.locked;
+        },
+        cancel: function cancel() {
+            this.form = {
+                title: this.issue.title,
+                description: this.issue.description
+            };
+
+            this.editing = false;
+        },
+        update: function update() {
+            var _this = this;
+
+            axios.patch('/issues/' + this.issue.category.slug + '/' + this.issue.slug, {
+                title: this.form.title,
+                description: this.form.description
+            }).then(function () {
+                _this.editing = false;
+
+                flash('Your issue has been updated.');
+            });
         }
     }
 });

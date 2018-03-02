@@ -173,9 +173,46 @@ class CreateIssuesTest extends TestCase
             ->assertSessionHasErrors('g-recaptcha-response');
     }
 
-//    /** @test */
-//    function an_issue_can_be_updated()
-//    {
-//
-//    }
+    /** @test */
+    function an_issue_can_be_updated()
+    {
+        $this->signIn();
+
+        $issue = create('App\Issue', ['user_id' => auth()->id()]);
+
+        $this->patch($issue->path(), [
+            'title' => 'Changed',
+            'description' => 'Changed description'
+        ]);
+
+        $this->assertEquals('Changed', $issue->fresh()->title);
+        $this->assertEquals('Changed description', $issue->fresh()->description);
+    }
+
+    /** @test */
+    function an_issue_requires_a_title_and_description_to_be_updated()
+    {
+        $this->signIn();
+
+        $issue = create('App\Issue', ['user_id' => auth()->id()]);
+
+        $this->patch($issue->path(), [
+            'title' => 'Changed'
+        ])->assertSessionHasErrors('description');
+
+        $this->patch($issue->path(), [
+            'description' => 'Changed'
+        ])->assertSessionHasErrors('title');
+    }
+
+    /** @test */
+    function unauthorized_users_may_not_update_issues()
+    {
+        $this->signIn();
+
+        $issue = create('App\Issue', ['user_id' => create('App\User')->id]);
+
+        $this->patch($issue->path(), [])->assertStatus(403);
+    }
+
 }

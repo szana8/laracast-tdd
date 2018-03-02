@@ -19,8 +19,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 
-Route::view('scan', 'scan');
-
 Route::get('issues', 'IssuesController@index')->name('issues');
 Route::get('issues/search', 'SearchController@show');
 
@@ -28,7 +26,7 @@ Route::get('issues/create', 'IssuesController@create');
 Route::post('issues', 'IssuesController@store')->middleware('must-be-confirmed');
 Route::get('issues/{category}/{issue}', 'IssuesController@show');
 
-//Route::patch('issues/{category}/{issue}', 'IssuesController@update')->name('issues.update');
+Route::patch('issues/{category}/{issue}', 'IssuesController@update')->name('issues.update');
 Route::post('locked-issues/{issue}', 'LockedIssuesController@store')->name('locked-issues.store')->middleware(['auth', 'admin']);
 Route::delete('locked-issues/{issue}', 'LockedIssuesController@destroy')->name('locked-issues.destroy')->middleware(['auth', 'admin']);
 
