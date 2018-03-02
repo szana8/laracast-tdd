@@ -19,7 +19,11 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 
+Route::view('scan', 'scan');
+
 Route::get('issues', 'IssuesController@index')->name('issues');
+Route::get('issues/search', 'SearchController@show');
+
 Route::get('issues/create', 'IssuesController@create');
 Route::post('issues', 'IssuesController@store')->middleware('must-be-confirmed');
 Route::get('issues/{category}/{issue}', 'IssuesController@show');

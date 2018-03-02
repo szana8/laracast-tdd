@@ -22,6 +22,8 @@ trait CreatesApplication
         $app['config']->set('database.default','sqlite');
         $app['config']->set('database.connections.sqlite.database', ':memory:');
 
+        $app['config']->set('scout.driver', null);
+
         Hash::driver('bcrypt')->setRounds(4);
 
         return $app;

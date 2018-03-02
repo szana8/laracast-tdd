@@ -10,6 +10,20 @@
             </div>
 
             <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Search
+                    </div>
+                    <div class="card-body">
+                        <form method="GET" action="/issues/search">
+                            <input type="text" name="q" class="form-control" placeholder="Search for something..." />
+                        </form>
+
+                        <img src="https://www.algolia.com/static_assets/images/press/downloads/search-by-algolia.svg" height="40" class="mt-4" />
+                    </div>
+                </div>
+
+
                 @if (count($trending))
                     <div class="card">
                         <div class="card-header">

@@ -172,4 +172,10 @@ class CreateIssuesTest extends TestCase
         $this->publishIssue(['g-recaptcha-response' => 'test'])
             ->assertSessionHasErrors('g-recaptcha-response');
     }
+
+//    /** @test */
+//    function an_issue_can_be_updated()
+//    {
+//
+//    }
 }

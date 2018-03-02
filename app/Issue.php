@@ -5,6 +5,7 @@ namespace App;
 use App\Events\IssueHasNewReply;
 use App\Events\IssueReceivedNewReply;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 /**
  * @property mixed category
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 class Issue extends Model
 {
 
-    use RecordsActivity;
+    use RecordsActivity, Searchable;
 
     /**
      * Don't auto-apply mass assignment protection.
@@ -220,5 +221,11 @@ class Issue extends Model
     {
         return $this->update(['best_reply_id' => $reply->id]);
     }
+
+    public function toSearchableArray()
+    {
+        return $this->toArray() + ['path' => $this->path()];
+    }
+
 
 }
