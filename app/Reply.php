@@ -4,6 +4,7 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Stevebauman\Purify\Facades\Purify;
 
 class Reply extends Model
 {
@@ -107,6 +108,8 @@ class Reply extends Model
     }
 
     /**
+     * Determine if the current reply is marked as the best.
+     *
      * @return bool
      */
     public function isBest()
@@ -115,10 +118,21 @@ class Reply extends Model
     }
 
     /**
+     * Determine if the current reply is marked as the best.
+     *
      * @return bool
      */
     public function getIsBestAttribute()
     {
         return $this->isBest();
+    }
+
+    /**
+     * @param $body
+     * @return mixed
+     */
+    public function getBodyAttribute($body)
+    {
+        return Purify::clean($body);
     }
 }

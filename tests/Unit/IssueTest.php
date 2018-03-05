@@ -134,4 +134,11 @@ class IssueTest extends TestCase
         });
     }
 
+    /** @test */
+    function an_issue_body_is_sanitized_automatically()
+    {
+        $issue = make('App\Issue', ['description' => '<script>alert("bar");</script>']);
+
+        $this->assertEmpty($issue->description);
+    }
 }

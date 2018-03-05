@@ -8,7 +8,7 @@
     <issue-view :issue="{{ $issue }}" inline-template>
         <div class="container">
             <div class="row">
-                <div class="col-md-8 v-cloak">
+                <div class="col-md-8" v-cloak>
                     @include('issue._question')
 
                     <replies @added="repliesCount++" @removed="repliesCount--"></replies>

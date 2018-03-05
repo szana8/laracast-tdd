@@ -7,7 +7,7 @@
         </div>
     </div>
     <div class="card-body">
-        <textarea class="form-control" v-model="form.description" rows="10">{{ $issue->description }}</textarea>
+        <wysiwyg name="description" v-model="form.description"></wysiwyg>
     </div>
 
     <div class="card-footer">
@@ -37,7 +37,7 @@
             @endcan
         </div>
     </div>
-    <div class="card-body" v-text="form.description">
+    <div class="card-body trix-content" v-html="form.description">
     </div>
 
     <div class="card-footer">

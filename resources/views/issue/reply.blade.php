@@ -25,7 +25,7 @@
                 <button class="btn btn-link btn-sm" @click="editing = false">Cancel</button>
             </div>
 
-            <div v-else v-text="body"></div>
+            <div v-else v-html="body" class="trix-content"></div>
         </div>
 
         @can('update', $reply)

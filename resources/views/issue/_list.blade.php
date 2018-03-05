@@ -24,7 +24,7 @@
         </div>
 
         <div class="card-body">
-            <div class="body">{{ $issue->description }}</div>
+            <div class="body">{!! $issue->description !!}</div>
             <hr>
         </div>
 

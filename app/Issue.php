@@ -6,6 +6,7 @@ use App\Events\IssueHasNewReply;
 use App\Events\IssueReceivedNewReply;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
+use Stevebauman\Purify\Facades\Purify;
 
 /**
  * @property mixed category
@@ -222,10 +223,20 @@ class Issue extends Model
         return $this->update(['best_reply_id' => $reply->id]);
     }
 
+    /**
+     * @return array
+     */
     public function toSearchableArray()
     {
         return $this->toArray() + ['path' => $this->path()];
     }
 
-
+    /**
+     * @param $description
+     * @return mixed
+     */
+    public function getDescriptionAttribute($description)
+    {
+        return Purify::clean($description);
+    }
 }
