@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\Administrator;
+use App\Http\Middleware\LoadCommonData;
 use App\Http\Middleware\RedirectIfEmailNotConfirmed;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -21,6 +22,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
+        LoadCommonData::class
     ];
 
     /**

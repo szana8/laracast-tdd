@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-html="content" ref="content" class="trix-content"></div>
+        <div v-html="content" ref="content"></div>
     </div>
 </template>
 
@@ -11,7 +11,7 @@
     export default {
         props: ['content'],
 
-        mounted() {
+        mounted () {
             this.highlight(this.$refs.content);
         },
 
@@ -31,10 +31,6 @@
                     this.highlight(this.$refs['content']);
                 });
             }
-        },
+        }
     }
 </script>
-
-<style scoped>
-
-</style>

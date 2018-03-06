@@ -23,7 +23,7 @@ Route::get('issues', 'IssuesController@index')->name('issues');
 Route::get('issues/search', 'SearchController@show');
 
 Route::get('issues/create', 'IssuesController@create')->middleware('must-be-confirmed');
-Route::post('issues', 'IssuesController@store')->middleware('must-be-confirmed');
+Route::post('issues', 'IssuesController@store');
 Route::get('issues/{category}/{issue}', 'IssuesController@show');
 
 Route::patch('issues/{category}/{issue}', 'IssuesController@update')->name('issues.update');
@@ -31,7 +31,7 @@ Route::post('locked-issues/{issue}', 'LockedIssuesController@store')->name('lock
 Route::delete('locked-issues/{issue}', 'LockedIssuesController@destroy')->name('locked-issues.destroy')->middleware(['auth', 'admin']);
 
 Route::delete('issues/{category}/{issue}', 'IssuesController@destroy');
-Route::get('issues/{category}', 'IssuesController@index');
+Route::get('issues/{category}', 'IssuesController@index')->name('categories');
 
 Route::get('issues/{category}/{issue}/replies', 'RepliesController@index');
 Route::post('issues/{category}/{issue}/replies', 'RepliesController@store');

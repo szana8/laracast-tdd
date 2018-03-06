@@ -26,21 +26,11 @@ $factory->define(\App\Category::class, function (Faker $faker) {
     return [
         'name' => $name,
         'slug' => $name,
-        'description' => $faker->paragraph
+        'description' => $faker->paragraph,
+        'color' => $faker->hexcolor
     ];
 });
 
-//$factory->define(\App\Subtask::class, function (Faker $faker) {
-//    return [
-//        'user_id' => function () {
-//            return factory('App\User')->create()->id;
-//        },
-//        'issue_id' => function () {
-//            return factory('App\Issue')->create()->id;
-//        },
-//        'body' => $faker->paragraph
-//    ];
-//});
 
 $factory->define(\App\Reply::class, function (Faker $faker) {
     return [

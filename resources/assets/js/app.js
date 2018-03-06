@@ -21,10 +21,28 @@ Vue.component('paginator', require('./components/Paginator.vue'));
 Vue.component('user-notifications', require('./components/UserNotifications.vue'));
 Vue.component('avatar-form', require('./components/AvatarForm.vue'));
 Vue.component('wysiwyg', require('./components/Wysiwyg.vue'));
+Vue.component('dropdown', require('./components/Dropdown.vue'));
+Vue.component('logout-button', require('./components/LogoutButton.vue'));
+Vue.component("login", require("./components/Login"));
+Vue.component("register", require("./components/Register"));
 
 Vue.component('issue-view', require('./pages/Issue.vue'));
 
 
 const app = new Vue({
-    el: '#app'
+    el: "#app",
+
+    data: {
+        searching: false
+    },
+
+    methods: {
+        search() {
+            this.searching = true;
+
+            this.$nextTick(() => {
+                this.$refs.search.focus();
+            });
+        }
+    }
 });

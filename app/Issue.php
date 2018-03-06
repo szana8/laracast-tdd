@@ -236,4 +236,9 @@ class Issue extends Model
     {
         return Purify::clean($description);
     }
+
+    public function hasUpdatesFor($user)
+    {
+        return true;
+    }
 }

@@ -1,8 +1,9 @@
-
 window._ = require('lodash');
 window.Popper = require('popper.js').default;
 
 import InstantSearch from 'vue-instantsearch';
+import VModal from 'vue-js-modal';
+import moment from 'moment';
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -12,9 +13,34 @@ import InstantSearch from 'vue-instantsearch';
 
 try {
     window.$ = window.jQuery = require('jquery');
-
-    require('bootstrap');
 } catch (e) {}
+
+/**
+ * Vue is a modern JavaScript library for building interactive web interfaces
+ * using reactive data binding and reusable components. Vue's API is clean
+ * and simple, leaving you to focus on building your next great project.
+ */
+
+window.Vue = require('vue');
+
+Vue.use(InstantSearch);
+Vue.use(VModal);
+
+let authorizations = require('./authorizations');
+
+Vue.prototype.authorize = function(...params) {
+    if (!window.App.signedIn) return false;
+
+    if (typeof params[0] === 'string') {
+        return authorizations[params[0]](params[1]);
+    }
+
+    return params[0](window.App.user);
+};
+
+Vue.prototype.signedIn = window.App.signedIn;
+Vue.prototype.humanTime = timestamp => moment(timestamp).fromNow();
+
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -23,7 +49,6 @@ try {
  */
 
 window.axios = require('axios');
-
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**
@@ -40,59 +65,8 @@ if (token) {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
-/**
- * Echo exposes an expressive API for subscribing to channels and listening
- * for events that are broadcast by Laravel. Echo and event broadcasting
- * allows your team to easily build robust real-time web applications.
- */
-window.Vue = require('vue');
-
-Vue.use(InstantSearch);
-
-let authorizations = require('./authorizations');
-
-Vue.prototype.authorize = function (...params) {
-    if (!window.App.signedIn) return false;
-
-    if (typeof params[0] === 'string') {
-        return authorizations[params[0]](params[1]);
-    }
-
-    return params[0](window.App.user);
-}
-
-Vue.prototype.signedIn = window.App.signedIn;
-
 window.events = new Vue();
 
 window.flash = function (message, level = 'success') {
   window.events.$emit('flash', { message, level });
 };
-
-
-/**
- * Highlight JS
- */
-// let Highlighter = require('highlight.js');
-// require('highlight.js/styles/foundation.css');
-//
-// Vue.prototype.highlight = function (block) {
-//     if (! block) return;
-//
-//     block.querySelectorAll('pre').forEach(
-//         node => Highlighter.highlightBlock(node)
-//     );
-// };
-
-
-
-// import Echo from 'laravel-echo'
-
-// window.Pusher = require('pusher-js');
-
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: process.env.MIX_PUSHER_APP_KEY,
-//     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-//     encrypted: true
-// });

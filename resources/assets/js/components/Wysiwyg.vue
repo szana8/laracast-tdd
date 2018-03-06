@@ -1,25 +1,44 @@
 <template>
     <div>
-        <input type="hidden" id="trix" class="trix-content" :name="name" :value="value">
+        <input id="trix" type="hidden" :name="name" :value="value">
 
-        <trix-editor ref="trix" class="trix-content" input="trix" :placeholder="placeholder"></trix-editor>
+        <trix-editor
+                ref="trix"
+                input="trix"
+                @trix-change="change"
+                :placeholder="placeholder">
+        </trix-editor>
     </div>
 </template>
 
+<style lang="scss">
+    @import '~trix/dist/trix.css';
+</style>
+
 <script>
-    import Trix from 'trix'
+    import Trix from 'trix';
 
     export default {
-        props: ['name', 'value', 'placeholder', 'shouldClear'],
+        props: ['name', 'value', 'placeholder'],
 
-        mounted() {
-              this.$refs.trix.addEventListener('trix-change', e => {
-                    this.$emit('input', e.target.innerHTML);
-              });
-
-              this.$watch('shouldClear', () => {
-                 this.$refs.trix.value = '';
-              });
+        methods: {
+            change({target}) {
+                this.$emit('input', target.value)
+            }
         },
+
+        watch: {
+            value(val) {
+                if (val === '') {
+                    this.$refs.trix.value = '';
+                }
+            }
+        }
     }
 </script>
+
+<style scoped>
+    trix-editor {
+        min-height: 100px;
+    }
+</style>
