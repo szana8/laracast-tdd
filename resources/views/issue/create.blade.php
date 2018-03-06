@@ -33,9 +33,7 @@
 
                             <div class="form-group">
                                 <label for="description">Description:</label>
-                                <wysiwyg name="description" value="form.description"></wysiwyg>
-                                {{--<textarea class="form-control" name="description" id="description"--}}
-                                          {{--placeholder="Description" rows="8" required>{{ old('description') }}</textarea>--}}
+                                <wysiwyg name="description"></wysiwyg>
                             </div>
 
                             <div class="mb-4">

@@ -22,7 +22,7 @@ Route::get('/home', 'HomeController@index');
 Route::get('issues', 'IssuesController@index')->name('issues');
 Route::get('issues/search', 'SearchController@show');
 
-Route::get('issues/create', 'IssuesController@create');
+Route::get('issues/create', 'IssuesController@create')->middleware('must-be-confirmed');
 Route::post('issues', 'IssuesController@store')->middleware('must-be-confirmed');
 Route::get('issues/{category}/{issue}', 'IssuesController@show');
 
