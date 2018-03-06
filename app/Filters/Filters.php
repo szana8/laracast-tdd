@@ -2,7 +2,6 @@
 
 namespace App\Filters;
 
-
 use Illuminate\Http\Request;
 
 abstract class Filters
@@ -47,7 +46,7 @@ abstract class Filters
         $this->builder = $builder;
 
         collect($this->getFilters())
-            ->filter(function($value, $filter) {
+            ->filter(function ($value, $filter) {
                 return method_exists($this, $filter);
             })
             ->each(function ($value, $filter) {
@@ -66,5 +65,4 @@ abstract class Filters
     {
         return $this->request->only($this->filters);
     }
-
 }

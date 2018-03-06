@@ -3,8 +3,8 @@
 namespace App;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Stevebauman\Purify\Facades\Purify;
+use Illuminate\Database\Eloquent\Model;
 
 class Reply extends Model
 {
@@ -94,7 +94,7 @@ class Reply extends Model
      */
     public function path()
     {
-        return $this->issue->path() . "#reply-{$this->id}";
+        return $this->issue->path()."#reply-{$this->id}";
     }
 
     /**

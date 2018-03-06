@@ -2,7 +2,6 @@
 
 namespace App;
 
-
 trait RecordsActivity
 {
     /**
@@ -10,7 +9,9 @@ trait RecordsActivity
      */
     protected static function bootRecordsActivity()
     {
-        if (auth()->guest()) return;
+        if (auth()->guest()) {
+            return;
+        }
 
         foreach (static::getActivitiesToRecord() as $event) {
             static::created(function ($model) use ($event) {
@@ -18,7 +19,7 @@ trait RecordsActivity
             });
         }
 
-        static::deleting(function ($model){
+        static::deleting(function ($model) {
             $model->activity()->delete();
         });
     }

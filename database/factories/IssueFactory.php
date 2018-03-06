@@ -20,7 +20,6 @@ $factory->define(\App\Issue::class, function (Faker $faker) {
     ];
 });
 
-
 $factory->define(\App\Category::class, function (Faker $faker) {
     $name = $faker->word;
 
@@ -43,7 +42,6 @@ $factory->define(\App\Category::class, function (Faker $faker) {
 //    ];
 //});
 
-
 $factory->define(\App\Reply::class, function (Faker $faker) {
     return [
         'user_id' => function () {
@@ -62,7 +60,7 @@ $factory->define(\Illuminate\Notifications\DatabaseNotification::class, function
         'type' => 'App\Notifications\IssueWasUpdated',
         'notifiable_id' => function () {
             return auth()->id() ?: factory('App\User')->create()->id;
-         },
+        },
         'notifiable_type' => 'App\User',
         'data' => ['foo', 'bar']
     ];

@@ -2,11 +2,10 @@
 
 namespace App;
 
-use App\Events\IssueHasNewReply;
-use App\Events\IssueReceivedNewReply;
-use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
+use App\Events\IssueReceivedNewReply;
 use Stevebauman\Purify\Facades\Purify;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property mixed category
@@ -14,7 +13,6 @@ use Stevebauman\Purify\Facades\Purify;
  */
 class Issue extends Model
 {
-
     use RecordsActivity, Searchable;
 
     /**
@@ -68,7 +66,7 @@ class Issue extends Model
      */
     public function path()
     {
-        return '/issues/' . $this->category->slug . '/' . $this->slug;
+        return '/issues/'.$this->category->slug.'/'.$this->slug;
     }
 
     /**
@@ -80,7 +78,6 @@ class Issue extends Model
     {
         return $this->hasMany(Reply::class);
     }
-
 
     /**
      * An issue belongs to a creator.
@@ -208,7 +205,7 @@ class Issue extends Model
     public function setSlugAttribute($value)
     {
         if (static::whereSlug($slug = str_slug($value))->exists()) {
-            $slug = "{$slug}-" . $this->id;
+            $slug = "{$slug}-".$this->id;
         }
 
         $this->attributes['slug'] = $slug;

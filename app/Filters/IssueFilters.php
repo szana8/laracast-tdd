@@ -4,7 +4,6 @@ namespace App\Filters;
 
 use App\User;
 
-
 class IssueFilters extends Filters
 {
     /**
@@ -48,5 +47,4 @@ class IssueFilters extends Filters
     {
         return $this->builder->where('replies_count', 0);
     }
-
 }
