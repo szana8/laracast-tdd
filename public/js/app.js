@@ -87936,16 +87936,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
 
-    // watch: {
-    //     editing() {
-    //         if (this.editing) return;
-    //
-    //         this.$nextTick(() => {
-    //             this.highlight(this.$refs['body']);
-    //         });
-    //     }
-    // },
-
     created: function created() {
         var _this = this;
 
@@ -88147,7 +88137,7 @@ exports = module.exports = __webpack_require__(90)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -88176,11 +88166,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['content'],
 
     mounted: function mounted() {
-        var _this = this;
-
-        this.$nextTick(function () {
-            _this.highlight(_this.$refs.content);
-        });
+        this.highlight(this.$refs.content);
     },
 
 
@@ -88196,10 +88182,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     watch: {
         content: function content() {
-            var _this2 = this;
+            var _this = this;
 
             this.$nextTick(function () {
-                _this2.highlight(_this2.$refs['content']);
+                _this.highlight(_this.$refs['content']);
             });
         }
     }
@@ -106257,7 +106243,11 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", { ref: "content", domProps: { innerHTML: _vm._s(_vm.content) } })
+    _c("div", {
+      ref: "content",
+      staticClass: "trix-content",
+      domProps: { innerHTML: _vm._s(_vm.content) }
+    })
   ])
 }
 var staticRenderFns = []
@@ -106622,12 +106612,7 @@ var render = function() {
                 ]
               )
             ])
-          : _c(
-              "div",
-              { staticClass: "trix-content" },
-              [_c("highlight", { attrs: { content: _vm.body } })],
-              1
-            )
+          : _c("div", [_c("highlight", { attrs: { content: _vm.body } })], 1)
       ]),
       _vm._v(" "),
       _vm.authorize("owns", _vm.reply) || _vm.authorize("owns", _vm.reply.issue)
