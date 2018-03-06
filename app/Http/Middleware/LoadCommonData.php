@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use App\Trending;
 use Closure;
+use App\Trending;
 
 class LoadCommonData
 {
