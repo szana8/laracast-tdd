@@ -16,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
     {
         \View::composer('*', function ($view) {
             $categories = \Cache::rememberForever('categories', function () {
-               return  Category::all();
+                return  Category::all();
             });
 
             $view->with('categories', $categories);

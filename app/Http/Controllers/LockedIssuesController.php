@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Issue;
 
-
 class LockedIssuesController extends Controller
 {
     /**

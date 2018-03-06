@@ -36,7 +36,7 @@ class Trending
      */
     public function cacheKey()
     {
-        return app()->environment('testing') ? 'testing_trending_issues' :  'trending_issues';
+        return app()->environment('testing') ? 'testing_trending_issues' : 'trending_issues';
     }
 
     /**

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Rules\Recaptcha;
 use App\Issue;
 use App\Category;
 use App\Trending;
 use App\Rules\SpamFree;
+use App\Rules\Recaptcha;
 use Illuminate\Http\Request;
 use App\Filters\IssueFilters;
 
@@ -118,7 +118,7 @@ class IssuesController extends Controller
             'description' => ['required', new SpamFree()]
         ]));
 
-        if(\request()->wantsJson()) {
+        if (\request()->wantsJson()) {
             return response('', 201);
         }
 
