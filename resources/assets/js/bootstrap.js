@@ -69,6 +69,23 @@ window.flash = function (message, level = 'success') {
   window.events.$emit('flash', { message, level });
 };
 
+
+/**
+ * Highlight JS
+ */
+// let Highlighter = require('highlight.js');
+// require('highlight.js/styles/foundation.css');
+//
+// Vue.prototype.highlight = function (block) {
+//     if (! block) return;
+//
+//     block.querySelectorAll('pre').forEach(
+//         node => Highlighter.highlightBlock(node)
+//     );
+// };
+
+
+
 // import Echo from 'laravel-echo'
 
 // window.Pusher = require('pusher-js');

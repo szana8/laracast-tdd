@@ -37,7 +37,9 @@
             @endcan
         </div>
     </div>
-    <div class="card-body trix-content" v-html="form.description">
+
+    <div class="card-body">
+        <highlight :content="form.description"></highlight>
     </div>
 
     <div class="card-footer">

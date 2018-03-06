@@ -1,6 +1,7 @@
 <script>
-    import Replies from '../components/Replies'
-    import SubscribeButton from '../components/SubscribeButton'
+    import Replies from '../components/Replies';
+    import SubscribeButton from '../components/SubscribeButton';
+    import Highlight from '../components/Highlight.vue';
 
     export default {
         name: "issue",
@@ -9,7 +10,8 @@
 
         components: {
             Replies,
-            SubscribeButton
+            SubscribeButton,
+            Highlight
         },
 
         data() {
