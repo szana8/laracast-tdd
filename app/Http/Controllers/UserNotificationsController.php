@@ -6,7 +6,6 @@ use App\User;
 
 class UserNotificationsController extends Controller
 {
-
     /**
      * Create a new controller instance.
      */

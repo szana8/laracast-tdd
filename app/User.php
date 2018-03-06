@@ -84,7 +84,7 @@ class User extends Authenticatable
      */
     public function visitedIssueCacheKey($issue)
     {
-        return sprintf("users.%s.visits.%s", $this->id, $issue->id);
+        return sprintf('users.%s.visits.%s', $this->id, $issue->id);
     }
 
     /**
@@ -109,7 +109,7 @@ class User extends Authenticatable
      */
     public function getAvatarPathAttribute($avatar)
     {
-        return asset($avatar ? 'storage/' . $avatar : 'images/avatars/default.png');
+        return asset($avatar ? 'storage/'.$avatar : 'images/avatars/default.png');
     }
 
     /**

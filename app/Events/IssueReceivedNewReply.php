@@ -24,5 +24,4 @@ class IssueReceivedNewReply
     {
         $this->reply = $reply;
     }
-
 }

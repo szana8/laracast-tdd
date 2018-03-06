@@ -2,7 +2,6 @@
 
 namespace App;
 
-
 trait Favoritable
 {
     /**
@@ -14,6 +13,7 @@ trait Favoritable
             $model->favorites->each->delete();
         });
     }
+
     /**
      * Reply can be favorited.
      *
@@ -33,7 +33,7 @@ trait Favoritable
     {
         $attributes = ['user_id' => auth()->id()];
 
-        if (!$this->favorites()->where($attributes)->exists()) {
+        if (! $this->favorites()->where($attributes)->exists()) {
             return $this->favorites()->create($attributes);
         }
     }
@@ -57,7 +57,7 @@ trait Favoritable
      */
     public function isFavorited()
     {
-        return !! $this->favorites->where('user_id', auth()->id())->count();
+        return (bool) $this->favorites->where('user_id', auth()->id())->count();
     }
 
     /**

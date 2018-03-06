@@ -4,8 +4,6 @@ namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 
 class IssueWasUpdated extends Notification
 {
@@ -55,7 +53,7 @@ class IssueWasUpdated extends Notification
     public function toArray()
     {
         return [
-            'message' => $this->reply->owner->name . ' replied to ' . $this->issue->summary,
+            'message' => $this->reply->owner->name.' replied to '.$this->issue->summary,
             'link' => $this->reply->path(),
         ];
     }

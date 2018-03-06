@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\User;
 use App\Http\Controllers\Controller;
 
 class UserAvatarController extends Controller
 {
-
     public function store()
     {
         $this->validate(request(), [
