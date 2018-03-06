@@ -31,7 +31,6 @@ $factory->define(\App\Category::class, function (Faker $faker) {
     ];
 });
 
-
 $factory->define(\App\Reply::class, function (Faker $faker) {
     return [
         'user_id' => function () {
